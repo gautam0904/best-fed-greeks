@@ -1,0 +1,8 @@
+{
+  "name": "best_fed_greeks",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

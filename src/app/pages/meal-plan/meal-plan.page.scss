@@ -1,0 +1,51 @@
+.date-range-header {
+    background: var(--ion-color-primary);
+    color: var(--ion-color-light);
+
+    h2 {
+        font-size: 1.15rem;
+    }
+
+    ion-button {
+        --background:rgba(0,0,0,0.0);
+        --color: var(--ion-color-light);
+        --color-activated: rgba(255,255,255,0.5);
+        --color-focused:rgba(255,255,255,0.5);
+    }
+}
+
+.meal-plan-details {
+    .day, .date {
+        background: var(--ion-color-secondary);
+        color: var(--ion-color-primary);
+        ion-title {
+            font-size: 1.15rem;
+            font-weight: 900;
+            line-height: 2rem;
+        }
+    }
+    ion-list {
+        padding: 0rem;
+        ion-item {
+            --background: white;
+            ion-icon {
+                font-size: 1.35rem !important;
+            }
+            ion-label {
+                padding: .5rem 1rem;
+
+                h2 {
+                    font-size: 1rem;
+                    font-weight: 600;
+                    span {
+                        color: var(--ion-color-secondary);
+                        font-weight: 800;
+                    }
+                }
+                p {
+                    font-size: 1.1rem;
+                }
+            }
+        }
+    }
+}

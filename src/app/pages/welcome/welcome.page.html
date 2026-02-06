@@ -1,0 +1,21 @@
+<ion-content>
+	<ion-grid no-padding>
+		<ion-row class="welcome-logo-box" no-padding>
+			<ion-col size="8" offset="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
+				<img src="../../assets/img/best-fed-greeks-logo.png" alt="Best Fed Greeks Logo">
+			</ion-col>
+			<ion-col size="10" offset="1" size-lg="6" offset-lg="3">
+				<ion-button color="primary" expand="block" size="large" [routerLink]="'/login'">LOGIN</ion-button>
+			</ion-col>
+
+			<ion-col size="10" offset="1" size-lg="6" offset-lg="3">
+				<ion-button color="tertiary" expand="block" size="large" [routerLink]="'/register'">REGISTER</ion-button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<ion-footer>
+	<p text-center>Having trouble signing in?</p>
+	<ion-button bfg-btm-btn expand="full" size="large" color="primary" expand="block" size="large" [routerLink]="'/technical-support'"><strong>TECHNICAL SUPPORT</strong></ion-button>
+</ion-footer>

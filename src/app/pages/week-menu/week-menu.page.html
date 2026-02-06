@@ -1,0 +1,81 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+				<ion-menu-button *ngIf="isStudent"></ion-menu-button>
+				<ion-back-button *ngIf="!isStudent"></ion-back-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">{{ house }} Menu</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid no-padding>
+		<ion-row class="date-range-nav">
+			<ion-col size="2" align-self-center>
+				<ion-button fill="clear" float-left (click)="switchToPreviousWeek()">
+					<ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+				</ion-button>
+			</ion-col>
+
+			<ion-col size="8" align-self-center>
+				<h2 text-center>{{ getStartDateFormatted() }} - {{ getEndDateFormatted() }}</h2>
+			</ion-col>
+	
+			<ion-col size="2" align-self-center>
+				<ion-button fill="clear" float-right (click)="switchToNextWeek()">
+					<ion-icon ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
+				</ion-button>
+			</ion-col>
+		</ion-row>
+		<ion-row class="seven-col-row" no-padding>
+			<ion-col class="col-1"  no-padding>
+				<ion-button [color]="getDayActiveColor('monday')" expand="full" (click)="switchToDay('monday')">MON</ion-button>
+			</ion-col>
+			<ion-col class="col-1" no-padding>
+				<ion-button [color]="getDayActiveColor('tuesday')" expand="full" (click)="switchToDay('tuesday')">TUE</ion-button>
+			</ion-col>
+			<ion-col class="col-1" no-padding>
+				<ion-button [color]="getDayActiveColor('wednesday')" expand="full" (click)="switchToDay('wednesday')">WED</ion-button>
+			</ion-col>
+			<ion-col class="col-1" no-padding>
+				<ion-button [color]="getDayActiveColor('thursday')" expand="full" (click)="switchToDay('thursday')">THU</ion-button>
+			</ion-col>
+			<ion-col class="col-1" no-padding>
+				<ion-button [color]="getDayActiveColor('friday')" expand="full" (click)="switchToDay('friday')">FRI</ion-button>
+			</ion-col>
+			<ion-col class="col-1" no-padding>
+				<ion-button [color]="getDayActiveColor('saturday')" expand="full" (click)="switchToDay('saturday')">SAT</ion-button>
+			</ion-col>
+			<ion-col class="col-1" no-padding>
+				<ion-button [color]="getDayActiveColor('sunday')" expand="full" (click)="switchToDay('sunday')">SUN</ion-button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+
+	<app-meal-details
+		*ngIf="menuDetailsLoaded"
+		[houseId]="houseId"
+		[details]="menuDetails"
+		[date]="currentDate"
+		[hideHeader]="true"
+	></app-meal-details>
+
+	<ion-row *ngIf="menuDetailsLoaded">
+		<ion-col *ngIf="isStudent" size="12" size-lg="6" offset-lg="3" padding>
+			<ion-button class="blue-button" expand="block" size="large" (click)="editMealPlan()">EDIT MEAL PLAN</ion-button>
+		</ion-col>
+
+<!-- 		<ion-col size="12" padding>
+			<ion-button color="primary" expand="block" size="large" [routerLink]="'/chat-list'">MESSAGE CHEF</ion-button>
+		</ion-col> -->
+	</ion-row>
+</ion-content>
+
+<ng-container *ngIf="(bfgUser.userConfigLoaded | async) as loaded">
+	<ion-footer>
+		<ng-container *ngIf="isStudent && loaded && bfgUser.appFunctionEnabled('requests_comments')">
+			<p text-center>Want to make a meal request?</p>
+			<ion-button  bfg-btm-btn expand="full" size="large" color="secondary" expand="block" [routerLink]="'/requests'"><strong>REQUESTS &amp; COMMENTS</strong></ion-button>
+		</ng-container>
+	</ion-footer>
+</ng-container>

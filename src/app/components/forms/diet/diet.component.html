@@ -1,0 +1,7 @@
+<h3>Dietary Preference</h3>
+<ion-list>
+  <ion-item *ngFor="let diets of diet">
+    <ion-label>{{diets.name}}</ion-label>
+    <ion-checkbox slot="end" [(ngModel)]="diets.checked"></ion-checkbox>
+  </ion-item>
+</ion-list>

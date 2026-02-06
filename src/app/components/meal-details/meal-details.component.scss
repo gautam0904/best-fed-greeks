@@ -1,0 +1,76 @@
+.menu-details {
+    .day, .date {
+        background: var(--ion-color-medium);
+        color: var(--ion-color-dark);
+        h3 {
+            padding: 1rem;
+        }
+    }
+
+    .meal-details {
+        ion-list {
+            padding: 0rem;
+            ion-item {
+                --background: white;
+                ion-label {
+                    padding: .5rem 1rem;
+
+                    h2 {
+                        white-space: pre-wrap;
+                        font-size: 1.35rem;
+                        font-weight: 900;
+                        span {
+                            color: var(--ion-color-success);
+                            font-weight: 600;
+                            font-size: 1.2rem;
+                        }
+                    }
+                    p {
+                        font-size: 1.25rem;
+                        line-height: 1.5rem;
+                        white-space: pre-wrap;
+                    }
+                }
+
+                ion-icon.like-icon {
+                    padding: .5rem 1rem;
+                    cursor: pointer;
+                }
+
+                ion-badge.like-count {
+                    font-size: 1em;
+                    background-color: #cccccc;
+                    ion-icon.like-icon-count {
+                        font-size: 1.5em;
+                    }
+                }
+
+                .liked {
+                    color: #d3312f;
+                }
+
+                .not-liked {
+                    color: black;
+                }
+            }
+
+            ion-item.detail-footer {
+                --background: #f6be001a;
+            }
+        }
+    }
+}
+
+p.dish-items {
+    font-size: 1em !important;
+}
+
+.cancel-repeat {
+    font-size: 1.15rem;
+    margin: .75rem 0rem;
+    white-space: pre-wrap;
+}
+
+.repeated-detail {
+    font-style: italic;
+}

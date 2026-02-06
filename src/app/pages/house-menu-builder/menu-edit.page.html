@@ -1,0 +1,44 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-icon name="arrow-back" style="font-size: 2em" (click)="back()"></ion-icon>
+		<ion-title><span class="wrap-text">Menu Edit<br/>{{ dateRangeDisplay }}</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="loaded">
+	<ion-grid style="height: 100%" no-padding>
+		<ion-row style="height: 100%">
+			<ion-col size='12' class="profile-top" style="height: 100%">
+				<ion-list class="meal-day-list" lines="full" no-padding>
+					<ng-container *ngFor="let menuDay of menuPlanAvailability">
+						<ion-list-header>
+							<h1 class="wrap-text">{{ menuDay.day }} - {{ menuDay.dateDisplay }}</h1>
+						</ion-list-header>
+						<ng-container *ngFor="let mealType of menuDay.mealTypes">
+							<h2>{{ mealType.display }}</h2>
+							<ng-select
+								[items]="recipes"
+								[groupBy]="'category'"
+								[multiple]="true"
+								[ngModel]="mealType.recipeIds"
+								bindValue="id"
+								bindLabel="name"
+								[virtualScroll]="true"
+							    [addTag]="true"
+							    [clearable]="false"
+							    [clearOnBackspace]="false"
+							    (add)="addMenuItem(menuDay, mealType, $event)"
+							    (remove)="removeMenuItem(menuDay, mealType, $event)"
+							>
+							</ng-select>
+						</ng-container>
+					</ng-container>
+				</ion-list>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+
+<ion-footer>
+</ion-footer>

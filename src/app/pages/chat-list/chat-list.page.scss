@@ -1,0 +1,28 @@
+a {
+    text-decoration: none;
+}
+    
+.chat-list {
+
+    ion-item {
+        --background: var(--ion-color-light);
+
+        ion-note {
+                font-size: 1rem;
+                font-weight: 600;
+                text-align: center;
+        }
+
+        ion-label {
+            padding: 1rem;
+            h2 {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+            p {
+                font-size: 1.2rem;
+                line-height: 1.75;
+            }
+        }
+    }
+}

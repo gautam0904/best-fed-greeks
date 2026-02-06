@@ -1,0 +1,83 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons color="tertiary" slot="start">
+			<ion-back-button color="tertiary" defaultHref="/welcome"></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid class="dark-grid" padding color="tertiary">
+		<ion-row padding>
+			<ion-col color="tertiary" size="12" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
+				<img src="../../assets/img/best-fed-greeks-logo.png" alt="Best Fed Greeks Logo">
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<ion-grid padding>
+		<ion-row padding>
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<ion-label color="secondary">Create Account</ion-label>
+				<form #registerForm="ngForm" novalidate>
+					<ion-list>
+						<ion-item>
+							<ion-input color="secondary" placeholder="Name" [(ngModel)]="register.name" name="name" #name="ngModel" required>
+							</ion-input>
+						</ion-item>
+
+						<ion-text color="danger">
+							<p [hidden]="name.valid || submitted == false" class="ion-padding-start secondary-text-danger">
+								Name is required
+							</p>
+						</ion-text>
+			
+						<ion-item>
+							<ion-input color="secondary" placeholder="Email" [(ngModel)]="register.email" name="email" type="email" #email="ngModel" required>
+							</ion-input>
+						</ion-item>
+						<ion-text color="danger">
+							<p [hidden]="email.valid || submitted == false" class="ion-padding-start secondary-text-danger">
+								Email Address is required
+							</p>
+						</ion-text>
+			
+						<ion-item>
+							<ion-input color="secondary" placeholder="Password" [(ngModel)]="register.password" name="password" type="password" #password="ngModel" required>
+							</ion-input>
+						</ion-item>
+						<ion-text color="danger">
+							<p [hidden]="password.valid || submitted == false" class="ion-padding-start secondary-text-danger">
+								Password is required
+							</p>
+						</ion-text>
+			
+						<ion-item>
+							<ion-input color="secondary" placeholder="Confirm Password" [(ngModel)]="register.password_confirmation" name="password_confirmation" type="password" #password_confirmation="ngModel" required>
+							</ion-input>
+						</ion-item>
+						<ion-text color="danger">
+							<p [hidden]="password_confirmation.valid || submitted == false" class="ion-padding-start secondary-text-danger">
+								Password is required
+							</p>
+						</ion-text>
+			
+						<ion-item>
+							<ion-input color="secondary" placeholder="Access Code" [(ngModel)]="register.access_code" name="access_code" type="access_code" #access_code="ngModel" required>
+							</ion-input>
+						</ion-item>
+						<ion-text color="danger">
+							<p [hidden]="access_code.valid || submitted == false" class="ion-padding-start secondary-text-danger">
+								Access Code is required
+							</p>
+						</ion-text>
+					</ion-list>
+				</form>
+			</ion-col>
+			
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<ion-button color="secondary" (click)="onRegister(registerForm)" type="submit" expand="block" size="large">Create Account</ion-button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+
+</ion-content>

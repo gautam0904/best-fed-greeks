@@ -1,0 +1,75 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-icon name="arrow-back" style="font-size: 2em" (click)="back()"></ion-icon>
+		<ion-title><span class="wrap-text">Menu Summary<br/>{{ dateRangeDisplay }}</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="loaded">
+	<ion-grid no-padding>
+		<ion-row>
+			<ion-col size='12' class="profile-top">
+				<div>
+					<h3>House: {{ houseName }}</h3>
+				</div>
+				<ng-container *ngIf="notApproved || bfgUser.isSuperChef()">
+					<ion-button color="primary" expand="block" size="large" (click)="editMenu()">Edit Menu</ion-button>
+				</ng-container>
+				<ng-container *ngIf="canSubmit">
+					<ion-button color="primary" expand="block" size="large" (click)="submitMenu()">Submit Menu</ion-button>
+				</ng-container>
+				<ng-container *ngIf="canPrint">
+					<ion-button color="primary" expand="block" size="large" (click)="printMenu()">Print Menu</ion-button>
+				</ng-container>
+				<div>
+					<span style="vertical-align: middle"><ion-icon name="radio-button-on" *ngIf="status == 'In Progress'" style="color: orange; font-size: 1.5em"></ion-icon></span>
+					<span style="vertical-align: middle"><ion-icon name="radio-button-on" *ngIf="status == 'Can Submit'" style="color: orange; font-size: 1.5em"></ion-icon></span>
+					<span style="vertical-align: middle"><ion-icon name="send" *ngIf="status == 'Submitted'" style="color: blue; font-size: 1.5em"></ion-icon></span>
+					<span style="vertical-align: middle"><ion-icon name="checkmark-circle" *ngIf="status == 'Approved'" style="color: #3ee721; font-size: 1.5em"></ion-icon></span>
+					<span style="vertical-align: middle"><ion-icon name="alert" *ngIf="status == 'Changes Needed'" style="color: #e36c6c; font-size: 1.5em"></ion-icon></span>
+					Status: {{ status }}
+
+					<ng-container *ngIf="distinctComments && distinctComments.length > 0">
+						<h3>Comments</h3>
+						<div style="white-space: pre" *ngFor="let comment of distinctComments">
+							{{ comment }}
+						</div>
+					</ng-container>
+				</div>
+				<hr>
+				<div>
+					<span style="vertical-align: middle"><ion-icon name="alert" *ngIf="deadline == 'Past Due'" style="color: #e36c6c; font-size: 1.5em"></ion-icon></span>
+					<span style="vertical-align: middle"><ion-icon name="radio-button-on" *ngIf="deadline != 'Past Due'" style="color: orange; font-size: 1.5em"></ion-icon></span>
+					Deadline: {{ deadline }}
+				</div>
+				<hr>
+				<div *ngFor="let mealType of mealTypeStatuses">
+					<span style="vertical-align: middle"><ion-icon name="alert" *ngIf="mealType.status_level == 'error'" style="color: #e36c6c; font-size: 1.5em"></ion-icon></span>
+					<span style="vertical-align: middle"><ion-icon name="checkmark-circle" *ngIf="mealType.status_level == 'completed'" style="color: #3ee721; font-size: 1.5em"></ion-icon></span>
+					{{ mealType.message }}
+				</div>
+				<hr>
+				<div *ngFor="let mealDateStatus of mealDateStatuses">
+					<ng-container *ngIf="mealDateStatus.meal_types_missing.length > 0">
+						<h2>{{ mealDateStatus.date }}</h2>
+						<div><span style="vertical-align: middle"><ion-icon name="alert" style="color: #e36c6c; font-size: 1.5em"></ion-icon></span>Missing dishes for meals: {{ mealDateStatus.meal_types_missing.join(', ') }}</div>
+					</ng-container>
+					<ng-container *ngIf="mealDateStatus.meal_types_missing.length == 0">
+						<div>
+							<h3><span style="vertical-align: middle"><ion-icon name="checkmark-circle" style="color: #3ee721;"></ion-icon></span> {{ mealDateStatus.date }} - Completed</h3>
+						</div>
+					</ng-container>
+				</div>
+			</ion-col>
+		</ion-row>
+		<ion-row padding>
+			<ion-col size='12'>
+				
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+
+<ion-footer>
+</ion-footer>

@@ -1,0 +1,23 @@
+.profile-top {
+	background-color: var(--ion-color-secondary);
+	color: white;
+	padding: .5rem 1rem 1rem;
+}
+
+.house-list {
+	ion-list-header {
+		--background: var(--ion-color-primary);
+		--color: white;
+	}
+	ion-item {
+		--background: #EDEDED;
+		ion-label {
+			padding: 1rem;
+		}
+	}
+	.house-name {
+		font-size: 1.5rem;
+		color: black;
+		font-weight: bold;
+	}
+}

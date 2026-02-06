@@ -1,0 +1,53 @@
+<ion-app>
+	<ion-menu  class="main-nav">
+		<ion-header >
+			<ion-toolbar>
+				<!-- <ion-title>MENU</ion-title> -->
+			</ion-toolbar>
+		</ion-header>
+		<ion-content color="secondary">
+			<ion-grid class="dark-grid" color="tertiary">
+				<ion-row>
+					<ion-col size="8" offset="2">
+						<img src="../assets/img/best-fed-greeks-logo.png" alt="best fed greeks logo" padding>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+			<ng-container *ngIf="(bfgUser.userConfigLoaded | async) as loaded">
+				<ion-list color="secondary" class="menu-link-list" *ngIf="loaded">
+					<ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
+						<ion-item *ngIf="showMenuItem(p)" [routerLink]="p.url" routerLinkActive="active" routerDirection="root" color="secondary">
+							<ion-label color="tertiary">
+								<!-- <ion-icon slot="start" [name]="p.icon"></ion-icon> -->
+								{{p.title}}
+							</ion-label>
+						</ion-item>
+					</ion-menu-toggle>
+				</ion-list>
+			</ng-container>
+			<ng-container *ngIf="isDesktop()">
+				<ion-grid>
+					<ion-row>
+						<ion-col size="12" class="store-info">
+								<a target="_blank" href="https://play.google.com/store/apps/details?id=com.bestfedgreeks.app">
+									<ion-icon ios="md-appstore" md="md-appstore"></ion-icon> Available on Android</a>
+								<br />
+								<a target="_blank" href="https://apps.apple.com/us/app/id1525132971">
+								<ion-icon ios="ios-appstore" md="ios-appstore"></ion-icon> Available on iOS!</a>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ng-container>
+		</ion-content>
+
+		
+		<ion-footer *ngIf = "showLogout()">
+			<ion-button bfg-btm-btn expand="full" size="large" color="primary" expand="block" size="large" (click)="bfgUser.logout()"><strong>LOGOUT</strong></ion-button>
+		</ion-footer>
+
+	</ion-menu>
+
+	<ion-router-outlet main></ion-router-outlet>
+	
+
+</ion-app>

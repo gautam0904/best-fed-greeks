@@ -1,0 +1,36 @@
+.date-range-nav {
+    background: var(--ion-color-secondary);
+    color: var(--ion-color-tertiary);
+
+    h2 {
+        font-size: 1.15rem;
+    }
+
+    ion-button {
+        --background:rgba(0,0,0,0.0);
+        --color: var(--ion-color-light);
+        --color-activated: rgba(255,255,255,0.5);
+        --color-focused:rgba(255,255,255,0.5);
+    }
+}
+
+.seven-col-row {
+    .col-1 {
+        width: 14.28571428571429%;
+        ion-button {
+            font-size: 1rem;
+            --padding-bottom: 0rem;
+            --padding-end: 0rem;
+            --padding-start: 0rem;
+            --padding-top: 0rem;
+            margin: 0rem;
+            background: var(--ion-color-tertiary);
+            --background: var(--ion-color-tertiary);
+            --color: var(--ion-color-secondary);
+            --background-activated: var(--ion-color-tertiary);
+            --background-focused: var(--ion-color-tertiary);
+        }
+    }
+    
+}
+

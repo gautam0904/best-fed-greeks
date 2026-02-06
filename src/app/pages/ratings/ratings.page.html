@@ -1,0 +1,27 @@
+<ion-header>
+		<ion-toolbar>
+			<ion-buttons slot="start">
+				<ion-menu-button></ion-menu-button>
+			</ion-buttons>
+			<ion-title><span class="wrap-text">Ratings</span></ion-title>
+		</ion-toolbar>
+	</ion-header>
+
+<ion-content>
+	<ion-grid no-padding>
+		<ng-container *ngIf="(bfgUser.userConfigLoaded | async) as loaded">
+			<ion-row>
+				<ion-col size='12' size-lg="12" class="ion-justify-content-center" padding *ngIf="loaded && bfgUser.appFunctionEnabled('meal_ratings')">
+					<img src="assets/img/BFG_Badge_ForkSpoon 1.png" alt="best fed greeks chef ratings" style="max-height: 50em; width: unset">
+					<ion-button color="secondary" expand="block" size="large" [routerLink]="'/meal-rating'">RATE MY MEAL</ion-button>
+				</ion-col>
+				<ion-col size='12' size-lg="12" padding *ngIf="loaded && bfgUser.appFunctionEnabled('chef_ratings')">
+					<img src="assets/img/BFG_Badge_ChefHat 1.png" alt="best fed greeks chef ratings" style="max-height: 50em; width: unset">
+					<ion-button color="secondary" expand="block" size="large" [routerLink]="'/chef-rating'">RATE MY CHEF</ion-button>
+				</ion-col>
+			</ion-row>
+		</ng-container>
+		
+	</ion-grid>
+	
+</ion-content>

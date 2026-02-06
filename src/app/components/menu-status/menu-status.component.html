@@ -1,0 +1,16 @@
+<ion-chip *ngIf="status == 'In Progress'" [ngClass]="myCls">
+	<ion-label>{{ status }}</ion-label>
+	<ion-icon [color]='iconColor' name="help-circle"></ion-icon>
+</ion-chip>
+<ion-chip *ngIf="status == 'Submitted'" [ngClass]="myCls">
+	<ion-label>{{ status }}</ion-label>
+	<ion-icon [color]='iconColor' name="checkmark-circle"></ion-icon>
+</ion-chip>
+<ion-chip *ngIf="status == 'Changes Needed'" [ngClass]="myCls">
+	<ion-label>{{ status }}</ion-label>
+	<ion-icon [color]='iconColor' name="close-circle"></ion-icon>
+</ion-chip>
+<ion-chip *ngIf="status == 'Approved'" [ngClass]="myCls">
+	<ion-label>{{ status }}</ion-label>
+	<ion-icon [color]='iconColor' name="checkmark-circle"></ion-icon>
+</ion-chip>

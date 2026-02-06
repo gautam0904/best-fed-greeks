@@ -1,0 +1,153 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button *ngIf="!bfgUser.isStudent()" defaultHref="/chat-list"></ion-back-button>
+			<ion-menu-button *ngIf="bfgUser.isStudent()"></ion-menu-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">CHAT</span></ion-title>
+		<ion-buttons slot="end">
+			<ion-icon name="refresh" slot="icon-only" (click)="refreshChat()"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true">
+	<ion-grid *ngIf="loaded" padding>
+		<ion-infinite-scroll threshold="100px" position="top" (ionInfinite)="loadMorePreviousMessages($event)">
+			<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+			</ion-infinite-scroll-content>
+		</ion-infinite-scroll>
+		<ion-row *ngFor="let message of getMessages()" padding>
+			<ion-col size="9" *ngIf="message.user_id !== currentUserId" class="message other-message">
+				<span>{{ message.message }}</span>
+				<div class="messager-name" text-right><br>{{ message.user }}</div>
+				<div class="time" text-right>{{ message.created_at }}</div><br />
+				<ng-container *ngIf="(bfgUser.userConfigLoaded | async) || (bfgUser.houseChanged | async)">
+					<ion-row *ngIf="bfgUser.appFunctionEnabled('chat_interactions')">
+						<ion-col size="10">
+							<ng-container *ngFor="let item of getInteractions(message) | keyvalue">
+
+								<ion-badge *ngIf="item.value > 0 && item.key == 'heart'" class="light-interaction-badge"
+									float-right>{{ item.value }} <ion-icon name="heart" class="interaction fab-heart"
+										float-right></ion-icon></ion-badge>
+								<ion-badge *ngIf="item.value > 0 && item.key == 'flame'" class="light-interaction-badge"
+									float-right>{{ item.value }} <ion-icon name="flame" class="interaction fab-flame"
+										float-right></ion-icon></ion-badge>
+								<ion-badge *ngIf="item.value > 0 && item.key == 'checkmark'"
+									class="light-interaction-badge" float-right>{{ item.value }} <ion-icon
+										name="checkmark-circle" class="interaction fab-checkmark"
+										float-right></ion-icon></ion-badge>
+								<ion-badge *ngIf="item.value > 0 && item.key == 'leaf'" class="light-interaction-badge"
+									float-right>{{ item.value }} <ion-icon name="leaf" class="interaction fab-leaf"
+										float-right></ion-icon></ion-badge>
+								<ion-badge *ngIf="item.value > 0 && item.key == 'carrot'"
+									class="light-interaction-badge" float-right>{{ item.value }} <ion-icon
+										name="nutrition" class="interaction fab-carrot"
+										float-right></ion-icon></ion-badge>
+								<ion-badge *ngIf="item.value > 0 && item.key == 'beer'" class="light-interaction-badge"
+									float-right>{{ item.value }} <ion-icon name="beer" class="interaction fab-beer"
+										float-right></ion-icon></ion-badge>
+								<ion-badge *ngIf="item.value > 0 && item.key == 'wine'" class="light-interaction-badge"
+									float-right>{{ item.value }} <ion-icon name="wine" class="interaction fab-wine"
+										float-right></ion-icon></ion-badge>
+							</ng-container>
+						</ion-col>
+						<ion-col size="2" class="interaction-col-divider">
+							<ion-badge class="light-badge">
+								<ion-icon class="add-interaction" name="add-circle-outline"
+									[class.add-interaction-active]="message.addingInteraction"
+									(click)="startAddingInteraction(message)"></ion-icon>
+							</ion-badge>
+							<ion-badge class="light-badge">
+								<ion-icon *ngIf="!bfgUser.isStudent()" class="add-interaction" name="eye"
+									(click)="viewInteractions(message)"></ion-icon>
+							</ion-badge>
+						</ion-col>
+					</ion-row>
+				</ng-container>
+			</ion-col>
+
+			<ion-col offset="3" size="9" *ngIf="message.user_id === currentUserId" class="message my-message">
+				<span>{{ message.message }}</span>
+				<div class="messager-name" text-right><br>{{ message.user }}</div>
+				<div class="time" text-right>{{ message.created_at }}</div>
+				<ng-container *ngIf="(bfgUser.userConfigLoaded | async) || (bfgUser.houseChanged | async)">
+					<div *ngIf="bfgUser.appFunctionEnabled('chat_interactions')">
+						<br />
+						<ng-container *ngFor="let item of getInteractions(message) | keyvalue">
+
+							<ion-badge *ngIf="item.value > 0 && item.key == 'heart'" class="light-interaction-badge"
+								float-right>{{ item.value }} <ion-icon name="heart" class="interaction fab-heart"
+									float-right></ion-icon></ion-badge>
+							<ion-badge *ngIf="item.value > 0 && item.key == 'flame'" class="light-interaction-badge"
+								float-right>{{ item.value }} <ion-icon name="flame" class="interaction fab-flame"
+									float-right></ion-icon></ion-badge>
+							<ion-badge *ngIf="item.value > 0 && item.key == 'checkmark'" class="light-interaction-badge"
+								float-right>{{ item.value }} <ion-icon name="checkmark-circle"
+									class="interaction fab-checkmark" float-right></ion-icon></ion-badge>
+							<ion-badge *ngIf="item.value > 0 && item.key == 'leaf'" class="light-interaction-badge"
+								float-right>{{ item.value }} <ion-icon name="leaf" class="interaction fab-leaf"
+									float-right></ion-icon></ion-badge>
+							<ion-badge *ngIf="item.value > 0 && item.key == 'carrot'" class="light-interaction-badge"
+								float-right>{{ item.value }} <ion-icon name="nutrition" class="interaction fab-carrot"
+									float-right></ion-icon></ion-badge>
+							<ion-badge *ngIf="item.value > 0 && item.key == 'beer'" class="light-interaction-badge"
+								float-right>{{ item.value }} <ion-icon name="beer" class="interaction fab-beer"
+									float-right></ion-icon></ion-badge>
+							<ion-badge *ngIf="item.value > 0 && item.key == 'wine'" class="light-interaction-badge"
+								float-right>{{ item.value }} <ion-icon name="wine" class="interaction fab-wine"
+									float-right></ion-icon></ion-badge>
+						</ng-container>
+					</div>
+					<div *ngIf="!bfgUser.isStudent() && bfgUser.appFunctionEnabled('chat_interactions')">
+						<br />
+						<ion-badge class="light-badge">
+							<ion-icon class="add-interaction" name="eye" (click)="viewInteractions(message)"></ion-icon>
+						</ion-badge>
+					</div>
+				</ng-container>
+			</ion-col>
+
+		</ion-row>
+		<ion-row *ngIf="messages.length == 0">
+			<p>No messages found</p>
+		</ion-row>
+	</ion-grid>
+	<ion-fab vertical="top" horizontal="end" slot="fixed" *ngIf="isAddingInteraction()">
+		<ion-fab-button>
+			<ion-icon name="share"></ion-icon>
+		</ion-fab-button>
+		<ion-fab-list side="bottom">
+			<ion-fab-button (click)="addInteraction('heart')"><ion-icon name="heart"
+					class="fab-heart"></ion-icon></ion-fab-button>
+			<ion-fab-button (click)="addInteraction('flame')"><ion-icon name="flame"
+					class="fab-flame"></ion-icon></ion-fab-button>
+			<ion-fab-button (click)="addInteraction('checkmark')"><ion-icon name="checkmark-circle"
+					class="fab-checkmark"></ion-icon></ion-fab-button>
+			<ion-fab-button (click)="addInteraction('leaf')"><ion-icon name="leaf"
+					class="fab-leaf"></ion-icon></ion-fab-button>
+			<ion-fab-button (click)="addInteraction('carrot')"><ion-icon name="nutrition"
+					class="fab-carrot"></ion-icon></ion-fab-button>
+			<ion-fab-button (click)="addInteraction('beer')"><ion-icon name="beer"
+					class="fab-beer"></ion-icon></ion-fab-button>
+			<ion-fab-button (click)="addInteraction('wine')"><ion-icon name="wine"
+					class="fab-wine"></ion-icon></ion-fab-button>
+		</ion-fab-list>
+	</ion-fab>
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar color="light">
+		<ion-row no-padding align-items-center>
+			<ion-col size="10">
+				<ion-textarea auto-grow="true" class="message-input" rows="1" [(ngModel)]="newMsg"></ion-textarea>
+			</ion-col>
+			<ion-col size="2">
+				<ion-button expand="block" fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn"
+					(click)="sendMessage()">
+					<ion-icon name="ios-send" slot="icon-only"></ion-icon>
+				</ion-button>
+			</ion-col>
+		</ion-row>
+	</ion-toolbar>
+</ion-footer>

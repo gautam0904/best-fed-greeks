@@ -1,0 +1,25 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">Announcements</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="loaded">
+	<ion-grid no-padding>
+		<ion-row>
+			<ion-col size='12' class="profile-top">
+				<h1 text-center>{{ user }}</h1>
+			</ion-col>
+		</ion-row>
+		<ion-row padding>
+			<p [innerHTML]="announcements | safeHtml"></p>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+
+<ion-footer>
+</ion-footer>

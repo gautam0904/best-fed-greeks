@@ -1,0 +1,39 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title ><span class="wrap-text">{{ house }} Dashboard</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="loaded">
+		<ion-grid no-padding>
+			<ion-row no-padding>
+				<ion-col size="12">
+					<h3 text-center *ngIf="hasMealServiceToday"><strong>Menu of the Day</strong></h3>
+					<h3 text-center *ngIf="!hasMealServiceToday"><strong>No meal service today</strong></h3>
+				</ion-col>
+			</ion-row>
+			<app-meal-details [details]="menuDayDetails" [day]="day" [date]="date" *ngIf="hasMealServiceToday"></app-meal-details>
+			
+			<ion-row padding>
+				<ion-col size="12" size-lg="6" offset-lg="3" no-padding>
+					<ion-button class="blue-button" expand="block" size="large" (click)="editMealPlan()">EDIT MEAL PLAN</ion-button>
+				</ion-col>
+				<ion-col size="12" size-lg="6" offset-lg="3" no-padding>
+					<ion-button class="blue-button" expand="block" size="large" (click)="goToWeeklyMenu()">VIEW WEEKLY MENU</ion-button>
+				</ion-col> 
+			</ion-row>
+
+		</ion-grid>
+</ion-content>
+
+<ng-container *ngIf="(bfgUser.userConfigLoaded | async) as loaded">
+	<ion-footer>
+		<ng-container *ngIf="loaded && bfgUser.appFunctionEnabled('requests_comments')">
+			<p text-center>Want to make a meal suggestion?</p>
+			<ion-button bfg-btm-btn expand="full" size="large" color="primary" expand="block" size="large" [routerLink]="'/requests'"><strong>REQUESTS &amp; COMMENTS</strong></ion-button>
+		</ng-container>
+	</ion-footer>
+</ng-container>

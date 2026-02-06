@@ -1,0 +1,79 @@
+<ion-row padding class="menu-details" style="padding-bottom: 0px">
+	<ion-col size="6" size-lg="3" offset-lg="3" no-padding class="day" *ngIf="!hideHeader">
+		<h3>{{ day }}</h3>
+	</ion-col>
+	<ion-col size="6" size-lg="3" no-padding class="date" *ngIf="!hideHeader">
+		<h3 text-right>{{ dateFormatted() }}</h3>
+	</ion-col>
+	<ion-col size="12" size-lg="6" offset-lg="3" no-padding class="meal-details">
+		<ion-list *ngIf="details.length > 0">
+			<ng-container  *ngFor="let d of details;let i = index" >
+				<ion-item no-padding (click)="goToMenuDetails(d)">
+					<ion-label class="alignleft">
+						<h2>{{ d.meal }}
+							<br/><span *ngIf="d.late_plate">Late Plate Selected</span>
+							<span *ngIf="d.checked_in">Checked In</span>
+							<span class="repeated-detail" *ngIf="d.repeated"> & Repeated </span>
+							<span class="repeated-detail" *ngIf="d.time_slot_signup"> for {{ d.time_slot_signup }} </span>
+						</h2>
+						<p class="dish-items">{{ d.dish }}</p>
+					</ion-label>
+						<ion-icon *ngIf="drilldown" ios="ios-arrow-forward" md="md-arrow-forward" slot="end"></ion-icon>
+				</ion-item>
+				<ng-container *ngIf="(bfgUser.userConfigLoaded | async) || (detailsUpdated$ | async)">
+					<ion-item class="detail-footer" *ngIf="(!bfgUser.isStudent() && bfgUser.appFunctionEnabled('meal_likes')) || bfgUser.isStudent()">
+							<ion-badge *ngIf="!bfgUser.isStudent() && bfgUser.appFunctionEnabled('meal_likes')" class="light-badge like-count">{{ getNumberOfLikes(d) }}<ion-icon class="like-icon-count liked" name="heart" float-right></ion-icon></ion-badge>
+							<ion-icon class="like-icon not-liked" name="heart-empty" *ngIf="!isLiked(d) && bfgUser.isStudent() && bfgUser.appFunctionEnabled('meal_likes')" (click)="likeMeal(i, d, true)"></ion-icon>
+							<ion-icon class="like-icon liked" name="heart" (click)="likeMeal(i, d, false)" *ngIf="isLiked(d) && bfgUser.isStudent() && bfgUser.appFunctionEnabled('meal_likes')"></ion-icon>
+							<ion-button *ngIf="d.repeated" color="warning" size="large" class="cancel-repeat" (click)="removeRepeatMealPlan(i, d.meal, d.late_plate)">
+									<ion-icon ios="ios-close-circle" md="md-close-circle" size="large" slot="start"></ion-icon>Cancel Repeat
+							</ion-button>
+					</ion-item>
+				</ng-container>
+				<ng-container *ngIf="isChef && d.has_signup">
+					<ion-item-group>
+							<ion-item-divider lines="none" color="primary">
+								<h3>{{ d.meal }} Check-In</h3>
+							</ion-item-divider>
+							<ion-item *ngIf="d.signup_finalized" lines="none" color="success">
+								<ion-icon name="checkmark-circle" slot="start"></ion-icon>
+								<p>Sign Up Complete</p>
+							</ion-item>
+							<ion-item *ngIf="!d.signup_finalized" lines="none" color="danger">
+								<ion-icon name="alert" slot="start"></ion-icon>
+								<p>Sign Up Still Active</p>
+							</ion-item>
+							<ion-item (click)="goToSignupRoster(d)" color="medium" lines="full">
+								<ion-icon name="information-circle" slot="start"></ion-icon>
+								<ion-icon name="arrow-forward" slot="end"></ion-icon>
+								<p>{{ d.total_signup }} Signed Up</p><br/>
+							</ion-item>
+					</ion-item-group>
+				</ng-container>
+				<ng-container *ngIf="isChef && d.has_late_plate">
+					<ion-item-group>
+							<ion-item-divider lines="none" color="primary">
+								<h3>{{ d.meal }} Late Plate</h3>
+							</ion-item-divider>
+							<ion-item *ngIf="d.late_plate_finalized" lines="none" color="success">
+								<ion-icon name="checkmark-circle" slot="start"></ion-icon>
+								<p>Sign Up Complete</p>
+							</ion-item>
+							<ion-item *ngIf="!d.late_plate_finalized" lines="none" color="danger">
+								<ion-icon name="alert" slot="start"></ion-icon>
+								<p>Sign Up Still Active</p>
+							</ion-item>
+							<ion-item (click)="goToLatePlateSignupRoster(d)" color="medium" lines="full">
+								<ion-icon name="information-circle" slot="start"></ion-icon>
+								<ion-icon name="arrow-forward" slot="end"></ion-icon>
+								<p>{{ d.total_late_plate }} Signed Up</p><br/>
+							</ion-item>
+					</ion-item-group>
+				</ng-container>
+			</ng-container>
+		</ion-list>
+		<ion-list *ngIf="details.length == 0">
+			<ion-item><p>No meal service</p></ion-item>
+		</ion-list>
+	</ion-col>
+</ion-row>

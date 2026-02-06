@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "454695636042",
+    "firebase_url": "https://best-fed-greeks.firebaseio.com",
+    "project_id": "best-fed-greeks",
+    "storage_bucket": "best-fed-greeks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454695636042:android:6ef8ccb63399b99f3d2ab3",
+        "android_client_info": {
+          "package_name": "com.bestfedgreeks.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "<FILL IN YOUR CLIENT ID>",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "<FILL IN YOUR KEY>"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "<FILL IN YOUR OAUTH CLIENT>",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

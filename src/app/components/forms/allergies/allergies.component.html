@@ -1,0 +1,7 @@
+<h3>Allergies</h3>
+<ion-list>
+  <ion-item *ngFor="let allergy of allergies">
+    <ion-label>{{allergy.name}}</ion-label>
+    <ion-checkbox slot="end" [(ngModel)]="allergy.checked"></ion-checkbox>
+  </ion-item>
+</ion-list>

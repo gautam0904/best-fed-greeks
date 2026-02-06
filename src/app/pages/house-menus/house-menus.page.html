@@ -1,0 +1,49 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">House Menus</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="loaded">
+	<ion-grid no-padding>
+		<ion-row>
+			<ion-col size='12' class="profile-top">
+				<h1 text-center>{{ user }}</h1>
+			</ion-col>
+		</ion-row>
+		<ion-row padding>
+			<ion-col size='12'>
+				<ng-container *ngFor="let houseLocation of houseLocations">
+					<ion-list class="house-list" lines="full" no-padding>
+						<ion-list-header>
+							<h1 class="wrap-text">{{ houseLocation.name }}</h1>
+						</ion-list-header>
+						
+						<ng-container *ngFor="let house of houseLocation.houses">
+							<ion-item class="house-name-item" no-padding>
+								<ion-label>
+									<h2 class="house-name">{{ house.name }}</h2>
+								</ion-label>
+							</ion-item>
+							<ng-container *ngFor="let week of housesKeyedMenu[house.id].weeks">
+								<ion-item no-padding>
+									<ion-label>
+										<h4 class="house-name">{{ week.display }}</h4>
+										<h5><app-menu-status [cls]="'dark'" [status]="week.menu_status"></app-menu-status></h5>
+									</ion-label>
+								</ion-item>
+							</ng-container>
+						</ng-container>
+					</ion-list>
+				</ng-container>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+
+<ion-footer>
+</ion-footer>

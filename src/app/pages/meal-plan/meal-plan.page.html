@@ -1,0 +1,55 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">MEAL PLAN</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-row class="date-range-header">
+		<ion-col size="2" align-self-center>
+			<ion-button fill="clear" float-left (click)="switchToPreviousWeek()">
+				<ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+			</ion-button>
+		</ion-col>
+
+		<ion-col size="8" align-self-center>
+			<h2 text-center>{{ getStartDateFormatted() }} - {{ getEndDateFormatted() }}</h2>
+		</ion-col>
+
+		<ion-col size="2" align-self-center>
+			<ion-button fill="clear" float-right (click)="switchToNextWeek()">
+				<ion-icon ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
+			</ion-button>
+		</ion-col>
+	</ion-row>
+	<ng-container *ngIf="mealPlansLoaded">
+		<ion-row padding *ngFor="let mealPlan of mealPlans" class="meal-plan-details">
+			<ion-col size="6" no-padding class="day">
+					<ion-title>{{ mealPlan.day }}</ion-title>
+				</ion-col>
+				<ion-col size="6" no-padding class="date">
+					<ion-title text-right>{{ mealPlan.date }}</ion-title>
+				</ion-col>
+			<ion-col size="12" no-padding>
+				<ion-list>
+					<ion-item *ngFor="let d of mealPlan.details" no-padding>
+						<ion-label class="alignleft">
+							<h2><span *ngIf="d.late_plate"><ion-icon ios="ios-repeat" md="md-repeat"></ion-icon></span> {{ d.meal }}</h2>
+						</ion-label>
+						<div class="alignright">
+							<ion-icon ios="ios-create" md="md-create"></ion-icon>&nbsp;
+							<ion-icon ios="ios-close" md="md-close"></ion-icon>
+						</div>
+					</ion-item>
+				</ion-list>
+			</ion-col>
+		</ion-row>
+	</ng-container>
+</ion-content>
+
+<ion-footer>
+	<ion-button color="secondary" expand="block" size="large" [routerLink]="'/edit-meal-plan'"><strong>EDIT MEAL PLAN</strong></ion-button>
+</ion-footer>

@@ -1,0 +1,29 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title><span class="wrap-text">CHAT LIST</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-list class="chat-list" lines="full" no-padding>
+		<ion-list-header>
+			House Chats
+		</ion-list-header>
+
+		<ng-container *ngFor="let chat of chatList" >
+			<ion-item [routerLink]="['/chat', chat.bfg_house_id]" no-padding>
+				<ion-label>
+					<h2>{{ chat.house_name }}</h2>
+					<p>{{ chat.message }}</p>
+					<ng-container *ngIf="chat.created_at">
+						<p style="font-weight: bold; font-style: italic; color: var(--ion-color-primary);">{{ chat.user }}</p>
+						<p style="font-weight: bold; font-style: italic; color: var(--ion-color-primary);">{{ chat.created_at }}</p>
+					</ng-container>
+				</ion-label>
+			</ion-item>
+		</ng-container>
+	</ion-list>
+</ion-content>

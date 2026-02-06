@@ -1,0 +1,55 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons color="tertiary" slot="start">
+			<ion-menu-button color="tertiary"></ion-menu-button>
+		</ion-buttons>
+		<ion-title slot="start" color="tertiary"><span color="tertiary" class="wrap-text">SUPPORT</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid>
+		<ion-row>
+			<ion-col size="12" size-lg="6" offset-lg="3" *ngIf="!submitted">
+				<form>
+					<ion-item>
+						<ion-label color="secondary" position="stacked">Name</ion-label>
+						<ion-input color="secondary" [(ngModel)]="data.name" name="name" type="text" placeholder="First and Last Name" required>
+						</ion-input>
+					</ion-item>
+			
+					<ion-item>
+						<ion-label color="secondary" position="stacked">Email</ion-label>
+						<ion-input color="secondary" [(ngModel)]="data.email" name="email" type="email" placeholder="example@email.com" required>
+						</ion-input>
+					</ion-item>
+					
+					<ion-item>
+						<ion-label color="secondary" position="stacked">House Name</ion-label>
+						<ion-input color="secondary" [(ngModel)]="data.houseName" name="houseName" type="text" placeholder="ex 'Delta Tau Delta'" required>
+						</ion-input>
+					</ion-item>
+					
+					<ion-item>
+						<ion-label color="secondary" position="stacked">College Name</ion-label>
+						<ion-input color="secondary" [(ngModel)]="data.collegeName" name="collegeName" type="text" placeholder="ex 'KU'" required>
+						</ion-input>
+					</ion-item>
+					
+					<ion-item>
+						<ion-label color="secondary" position="stacked">Issue</ion-label>
+						<ion-textarea color="secondary" [(ngModel)]="data.comment" name="comment" rows="6" cols="20" placeholder="Please describe in detail what the issue is..."required>
+						</ion-textarea>
+					</ion-item>
+				</form>
+			</ion-col>
+			<ion-col size="12" size-lg="6" offset-lg="3" *ngIf="submitted">
+				<h3>Thanks for contacting us. We'll reply to you by email as soon as possible.</h3>
+			</ion-col>
+		</ion-row>	
+	</ion-grid>
+</ion-content>
+
+<ion-footer>
+		<ion-button *ngIf="!submitted" bfg-btm-btn expand="full" size="large" (click)="save()" color="secondary"><strong>SUBMIT</strong></ion-button>
+</ion-footer>

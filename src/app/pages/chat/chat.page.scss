@@ -1,0 +1,124 @@
+.message {
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    white-space: pre-wrap;
+    b {
+      font-size: 1.35rem;
+      line-height: 2.25rem;
+      letter-spacing: 2;
+    }
+    span{
+      font-size: 1.2rem;
+    }
+
+    .messager-name {
+      font-size: .9rem;
+    }
+    .time {
+      font-size: .8rem;
+    }
+
+    .add-interaction {
+      font-size: 2em;
+    }
+
+    .add-interaction-active {
+      color: #f6be00;
+    }
+
+    span.interaction-divider {
+      font-size: 1.75em;
+    }
+
+    .interaction-col-divider {
+      border-left: black solid 2px;
+    }
+
+    .light-badge {
+      background-color: white;
+    }
+
+    .light-interaction-badge {
+       background-color: white;
+       margin-left: .5em;
+       margin-bottom: .5em;
+    }
+
+    .interaction {
+      font-size: 1.75em;
+    }
+
+}
+   
+  .my-message {
+    background: var(--ion-color-primary);
+    color: white !important;
+    .time {
+      color: white !important;
+    }
+  }
+   
+  .other-message {
+    background: var(--ion-color-medium);
+    color: black !important;
+    .time {
+      color: black !important;
+    }
+  }
+   
+  .time {
+    color: #dfdfdf;
+    float: right;
+    font-size: small;
+  }
+   
+  .message-input {
+    width: 100%;
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 10px;
+    background: #fff;
+    resize: none;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+   
+  .msg-btn {
+    --padding-start: 0.5em;
+    --padding-end: 0.5em;
+  }
+
+.fab-heart {
+  color: #d3312f;
+  font-size: 2em;
+}
+
+.fab-flame {
+  color: #ffc355;
+  font-size: 2em;
+}
+
+.fab-leaf {
+  color:#1cb31c;
+  font-size: 2em;
+}
+
+.fab-carrot {
+  color:#e59604;
+  font-size: 2em;
+}
+
+.fab-beer {
+  color: #c5c536;
+  font-size: 2em;
+}
+
+.fab-wine {
+  color:#d51bd5;
+  font-size: 2em;
+}
+
+.fab-checkmark {
+  color: green;
+  font-size: 2em;
+}

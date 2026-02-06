@@ -1,0 +1,63 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/ratings"></ion-back-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">MEAL RATING</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+	<ion-grid no-padding>
+		<ion-row>
+			<ion-col size='12' size-lg="6" offset-lg="3" padding>
+				<form>
+					<h3>Rating Date</h3>
+					<ion-item>
+						<ion-label position="floating">MM/DD/YYYY</ion-label>
+						<ion-input
+							name="date" 
+							[(ngModel)]="data.date"
+							[liIonic4Datepicker]="datePickerObj"
+							(ionChange)="mealDateChanged()"></ion-input>
+					</ion-item>
+					<h3>Meal Type</h3>
+					<ion-list>
+						<ion-radio-group [(ngModel)]="mealType" name="mealType" (ionChange)="mealTypeChanged()">
+							<ion-item *ngFor="let mealType of mealTypes">
+								<ion-label>{{ mealType }}</ion-label>
+								<ion-radio slot="end" value="{{ mealType }}"></ion-radio>
+							</ion-item>
+						</ion-radio-group>
+					</ion-list>
+				</form>
+			</ion-col>
+			<ion-col size='12' padding>
+				<app-meal-details [details]="menuDayDetails" [day]="day" [date]="" [drilldown]="false" *ngIf="menuDayDetailsLoaded"></app-meal-details>	
+			</ion-col>
+			<ion-col size='12' size-lg="6" offset-lg="3" padding>
+				<h3>Meal Rating</h3>
+				<!-- <rating [(ngModel)]="data.rating"
+				        readonly="false" 
+				        size="default">
+				</rating> -->
+			</ion-col>
+			<ion-col size='12' size-lg="6" offset-lg="3">
+				<form>
+					<ion-list>
+						<ion-item>
+							<ion-label position="stacked" color="secondary">Comment</ion-label>
+							<ion-textarea  [(ngModel)]="data.feedback" name="feedback" rows="6" cols="20" placeholder="Please leave us a comment..."></ion-textarea>
+						</ion-item>
+					</ion-list>
+				</form>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+
+</ion-content>
+
+<ion-footer>
+		<ion-button bfg-btm-btn expand="full" size="large" (click)="save()" color="primary"><strong>Save</strong></ion-button>
+</ion-footer>

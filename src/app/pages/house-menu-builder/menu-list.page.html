@@ -1,0 +1,46 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-icon name="arrow-back" style="font-size: 2em" (click)="back()"></ion-icon>
+		<ion-title><span class="wrap-text">Menu List</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="loaded">
+	<ion-grid no-padding>
+		<ion-row>
+			<ion-col size='12' class="profile-top">
+				<ion-item>
+					<h3>House: {{ houseName }}</h3>
+				</ion-item>
+			</ion-col>
+		</ion-row>
+		<ion-row padding>
+			<ion-col size='12'>
+				<ion-list class="house-list" lines="full" no-padding>
+				<ng-container *ngFor="let menu of menus">
+					<ion-item no-padding>
+						<ion-label (click)="goToMenu(menu.monday_of_week)">
+							<h2 class="house-name"><b>{{ menu.display }}</b></h2>
+							<br/>
+
+							<div class="">
+								<span style="vertical-align: middle"><ion-icon name="radio-button-on" *ngIf="menu.menu_status == 'In Progress'" style="color: orange; font-size: 1.5em"></ion-icon></span>
+								<span style="vertical-align: middle"><ion-icon name="radio-button-on" *ngIf="menu.menu_status == 'Can Submit'" style="color: orange; font-size: 1.5em"></ion-icon></span>
+								<span style="vertical-align: middle"><ion-icon name="send" *ngIf="menu.menu_status == 'Submitted'" style="color: blue; font-size: 1.5em"></ion-icon></span>
+								<span style="vertical-align: middle"><ion-icon name="checkmark-circle" *ngIf="menu.menu_status == 'Approved'" style="color: #3ee721; font-size: 1.5em"></ion-icon></span>
+								<span style="vertical-align: middle"><ion-icon name="alert" *ngIf="menu.menu_status == 'Changes Needed'" style="color: #e36c6c; font-size: 1.5em"></ion-icon></span>
+								Menu Status: {{ menu.menu_status}}
+							</div>
+						</ion-label>
+						<ion-icon ios="ios-arrow-forward" md="md-arrow-forward" slot="end"></ion-icon>
+					</ion-item>
+				</ng-container>
+				</ion-list>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+
+<ion-footer>
+</ion-footer>

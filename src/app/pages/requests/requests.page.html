@@ -1,0 +1,39 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">REQUESTS &amp; COMMENTS</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid>
+		<ion-row padding>
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<form>
+					<ion-item>
+						<ion-label position="stacked" color="secondary" class="my-label ion-text-wrap">Requests &amp;
+							Comments</ion-label>
+						<ion-textarea [(ngModel)]="data.comment" name="comment" rows="6" cols="20"
+							placeholder="Let us know your request or leave us a comment." required>
+						</ion-textarea>
+					</ion-item>
+					<p><small>*All requests &amp; comments are submitted to your house chef.</small></p>
+					<ion-button bfg-btm-btn expand="full" type="submit" (click)="save()"
+						class="blue-button">SUBMIT</ion-button>
+				</form>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<ng-container *ngIf="(bfgUser.userConfigLoaded | async) as loaded">
+	<ion-footer>
+		<ng-container *ngIf="bfgUser.isStudent() && loaded && bfgUser.appFunctionEnabled('chat')">
+			<p text-center>Need to message the house chef directly?</p>
+			<ion-button bfg-btm-btn expand="full" size="large" color="primary" expand="block" size="large"
+				[routerLink]="'/chat'"><strong>TO CHAT</strong></ion-button>
+		</ng-container>
+	</ion-footer>
+</ng-container>

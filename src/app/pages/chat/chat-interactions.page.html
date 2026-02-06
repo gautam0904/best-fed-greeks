@@ -1,0 +1,27 @@
+<ion-header translucent>
+<ion-toolbar>
+  <ion-title style="background-color: #cccccc">Chat Interactions</ion-title>
+  <ion-buttons slot="end">
+    <ion-button (click)="dismissModal()">Close</ion-button>
+  </ion-buttons>
+</ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+<ion-list *ngIf="message">
+  <ion-item *ngFor="let interaction of getInteractions()">
+    <ion-avatar slot="start">
+      	<ion-badge *ngIf="interaction.interaction_type == 'heart'" class="light-badge" float-right><ion-icon name="heart" class="interaction fab-heart" float-right></ion-icon></ion-badge>
+		<ion-badge *ngIf="interaction.interaction_type == 'flame'" class="light-badge" float-right><ion-icon name="flame" class="interaction fab-flame" float-right></ion-icon></ion-badge>
+		<ion-badge *ngIf="interaction.interaction_type == 'checkmark'" class="light-badge" float-right><ion-icon name="checkmark-circle" class="interaction fab-checkmark" float-right></ion-icon></ion-badge>
+		<ion-badge *ngIf="interaction.interaction_type == 'leaf'" class="light-badge" float-right><ion-icon name="leaf" class="interaction fab-leaf" float-right></ion-icon></ion-badge>
+		<ion-badge *ngIf="interaction.interaction_type == 'carrot'" class="light-badge" float-right><ion-icon name="nutrition" class="interaction fab-carrot" float-right></ion-icon></ion-badge>
+		<ion-badge *ngIf="interaction.interaction_type == 'beer'" class="light-badge" float-right><ion-icon name="beer" class="interaction fab-beer" float-right></ion-icon></ion-badge>
+		<ion-badge *ngIf="interaction.interaction_type == 'wine'" class="light-badge" float-right><ion-icon name="wine" class="interaction fab-wine" float-right></ion-icon></ion-badge>
+    </ion-avatar>
+    <ion-label>
+      <h2>{{ interaction.name }}</h2>
+      <p>{{ interaction.updated_at_display }}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>
+</ion-content>

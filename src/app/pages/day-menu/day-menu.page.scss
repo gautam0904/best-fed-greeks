@@ -1,0 +1,16 @@
+.meal-type {
+    background: var(--ion-color-secondary);
+    color: var(--ion-color-light);
+
+    h2 {
+        font-size: 2rem;
+        text-transform: uppercase;
+    }
+}
+
+.header {
+	background: var(--ion-color-medium);
+    color: var(--ion-color-dark);
+    font-size: 1.15rem;
+    font-weight: bold;
+}

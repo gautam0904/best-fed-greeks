@@ -1,0 +1,1077 @@
+{
+  "info": {
+    "name": "Best Fed Greeks API",
+    "description": "Complete API collection for Best Fed Greeks meal service management system. Updated to include all endpoints with proper request/response examples.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "2.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://bestfedgreeks.com/api",
+      "type": "string"
+    },
+    {
+      "key": "dev_base_url",
+      "value": "http://dev.bestfedgreeks.com/api",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "house_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"username_or_email\",\n  \"password\": \"user_password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{access_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/refresh-token",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "refresh-token"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgot-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Registration",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"access_code\": \"HOUSE123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "auth", "register"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Load User Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/user/load-profile",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "user", "load-profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save User Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"allergy_ids\": [1, 2],\n  \"diet_ids\": [3],\n  \"live_out_designation\": 0,\n  \"account\": {\n    \"password\": \"newpassword\",\n    \"password_confirmation\": \"newpassword\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/user/save-profile",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "user", "save-profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load User Config",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/user/load-config",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "user", "load-config"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Technical Support Info",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/user/load-technical-support-info",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "user", "load-technical-support-info"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Technical Support Info",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"houseName\": \"Delta Tau Delta\",\n  \"collegeName\": \"University of Example\",\n  \"comment\": \"Need help with meal plan\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/user/save-technical-support-info",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "user", "save-technical-support-info"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Load Student Dashboard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/dashboard/load",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "dashboard", "load"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load House Dashboard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-dashboard/load",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-dashboard", "load"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Houses",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-dashboard/load-houses",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-dashboard", "load-houses"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Announcements",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-dashboard/load-announcements",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-dashboard", "load-announcements"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Meal Management",
+      "item": [
+        {
+          "name": "Load Meal Plan Time Slots",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-01-15\",\n  \"meal_type\": \"breakfast\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/load-meal-plan-time-slots",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "load-meal-plan-time-slots"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Meal Plan Availability",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/load-meal-plan-availability",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "load-meal-plan-availability"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Meal Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meal_type\": \"breakfast\",\n  \"late_plate\": 0,\n  \"meal_date\": \"2024-01-15\",\n  \"meal_day\": \"monday\",\n  \"time_slot_signup\": \"7:00 AM - 9:00 AM\",\n  \"repeat\": 1,\n  \"bring_guest\": 0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/save-meal-plan",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "save-meal-plan"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Weekly Meal Plans",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"start_date\": \"2024-01-15\",\n  \"end_date\": \"2024-01-21\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/load-weekly-meal-plans",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "load-weekly-meal-plans"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Day Meal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-01-15\",\n  \"meal_type\": \"breakfast\",\n  \"load_additional_info\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/load-day-meal",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "load-day-meal"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Day Meal (Chef)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-01-15\",\n  \"meal_type\": \"breakfast\",\n  \"bfg_house_id\": {{house_id}},\n  \"load_additional_info\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-dashboard/load-day-meal",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-dashboard", "load-day-meal"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Quick Menu Day Action",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-01-15\",\n  \"meal_type\": \"breakfast\",\n  \"action\": \"like\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/quick-menu-day-action",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "quick-menu-day-action"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Repeat Meal Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meal_type\": \"breakfast\",\n  \"start_date\": \"2024-01-15\",\n  \"end_date\": \"2024-01-21\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/remove-repeat-meal-plan",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "remove-repeat-meal-plan"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Like Meal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meal_id\": 123,\n  \"action\": \"like\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/like-meal",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "like-meal"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Weekly Menu (Student)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"start_date\": \"2024-01-15\",\n  \"end_date\": \"2024-01-21\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/meals/load-weekly-menu",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "meals", "load-weekly-menu"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Weekly Menu (Chef)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"start_date\": \"2024-01-15\",\n  \"end_date\": \"2024-01-21\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-dashboard/load-weekly-menu",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-dashboard", "load-weekly-menu"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Menu Management",
+      "item": [
+        {
+          "name": "Load House Menus Summary",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-menus/load-summary",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-menus", "load-summary"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Menu Builder List",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/load-list",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "load-list"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Menu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"monday_of_week\": \"2024-01-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/load-menu",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "load-menu"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Menu Dish",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"start_date\": \"2024-01-15\",\n  \"meal_type\": \"Breakfast\",\n  \"recipe_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/save-menu-dish",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "save-menu-dish"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Menu Dish",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"date\": \"2024-01-15\",\n  \"meal_type\": \"Breakfast\",\n  \"recipe_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/remove-menu-dish",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "remove-menu-dish"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Recipe",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"name\": \"Scrambled Eggs\",\n  \"mealType\": \"Breakfast\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/save-recipe",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "save-recipe"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Submit Menu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"monday_of_week\": \"2024-01-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/submit-menu",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "submit-menu"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Print Menu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"monday_of_week\": \"2024-01-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/print-menu",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "print-menu"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Menu Summary",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"monday_of_week\": \"2024-01-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/menu-builder/load-menu-summary",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "menu-builder", "load-menu-summary"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Ratings & Comments",
+      "item": [
+        {
+          "name": "Save Meal Rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meal_type\": \"breakfast\",\n  \"meal_date\": \"2024-01-15\",\n  \"rating\": 5,\n  \"feedback\": \"Excellent meal!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/ratings/save-meal-rating",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "ratings", "save-meal-rating"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Chef Rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chef_id\": 123,\n  \"rating\": 5,\n  \"feedback\": \"Great chef!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/ratings/save-chef-rating",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "ratings", "save-chef-rating"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"Please add more vegetarian options\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/ratings/save-comment",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "ratings", "save-comment"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chat System",
+      "item": [
+        {
+          "name": "Load Chat List",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/chat/load-list",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "chat", "load-list"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Messages as Chef",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"all_message_ids\": \"1,2,3\",\n  \"earliest_message_id\": 1,\n  \"latest_message_id\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/chat/load-messages-as-chef",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "chat", "load-messages-as-chef"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Load Messages as Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"all_message_ids\": \"1,2,3\",\n  \"earliest_message_id\": 1,\n  \"latest_message_id\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/chat/load-messages-as-student",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "chat", "load-messages-as-student"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Message as Chef",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"latest_message_id\": 10,\n  \"message\": \"Hello everyone!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/chat/send-message-as-chef",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "chat", "send-message-as-chef"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Message as Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latest_message_id\": 10,\n  \"message\": \"Hello everyone!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/chat/send-message-as-student",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "chat", "send-message-as-student"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Interaction as Chef",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bfg_house_id\": {{house_id}},\n  \"message_id\": 1,\n  \"interaction_type\": \"like\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/chat/add-interaction-as-chef",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "chat", "add-interaction-as-chef"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Interaction as Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message_id\": 1,\n  \"interaction_type\": \"like\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/chat/add-interaction-as-student",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "chat", "add-interaction-as-student"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "House Roster",
+      "item": [
+        {
+          "name": "Load House Roster",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-01-15\",\n  \"meal_type\": \"breakfast\",\n  \"bfg_house_id\": {{house_id}}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-dashboard/load-roster",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-dashboard", "load-roster"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Time Slot Signup Pickup Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-01-15\",\n  \"meal_type\": \"breakfast\",\n  \"bfg_house_id\": {{house_id}},\n  \"time_slot\": \"7:00 AM - 9:00 AM\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bfg/house-dashboard/send-time-slot-signup-pickup-notification",
+              "host": ["{{base_url}}"],
+              "path": ["bfg", "house-dashboard", "send-time-slot-signup-pickup-notification"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

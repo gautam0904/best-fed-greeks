@@ -1,0 +1,61 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">{{ houseName }} Roster</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="loaded">
+	<ion-grid no-padding>
+		<ion-row *ngIf="mealType">
+			<ion-col size='12' class="profile-top">
+				<h2>{{ mealType }} on {{ getDateFormatted() }}</h2>
+				<p *ngIf="finalized">Sign Ups Finalized</p>
+				<p *ngIf="!finalized">Sign Up Still Active</p>
+			</ion-col>
+		</ion-row>
+		<ion-row padding>
+			<ion-col size="12" size-lg="6" offset-lg="3" no-padding class="roster">
+				<ion-list>
+					<ion-list-header>
+						<ion-label><h2>Total Students: {{ usersSignedUp }}</h2></ion-label>
+					</ion-list-header>
+					<ion-item-group *ngFor="let d of users">
+						<div *ngIf="d.time_slot_signup && d.is_group" size='12' class="profile-top">
+							<p>{{ amountSignedUpForTimeSlot(d.time_slot_signup) }} signed up for {{ d.time_slot_signup_display }}</p>
+							<ion-button
+								color="primary"
+								[disabled]="timeSlotSignupNotificationSent(d.time_slot_signup) || !finalized"
+								(click)="sendPickupNotification(d.time_slot_signup)"
+							>
+								{{ timeSlotSignupNotificationSent(d.time_slot_signup) ? "Notification Sent" : finalized ? "Send Pickup Notification" : "Signup not finalized yet" }}
+							</ion-button>
+						</div>
+						<ng-container *ngIf="!d.is_group">
+							<ion-item lines="full" color="light">
+								<ion-icon name="contact" slot="start"></ion-icon>
+								<h3 class="student-name">{{ d.name }} {{ d.live_out_designation ? "(Living Out Of House)" : "" }}</h3>
+							</ion-item>
+							<ion-item *ngIf="d.allergies" lines="full" color="warning">
+								<ion-icon name="alert" slot="start"></ion-icon>
+								<p class="student-allergy"><b>Allergies:</b><br />{{ d.allergies }}</p>
+							</ion-item>
+							<ion-item *ngIf="d.dietary_preferences" lines="none" color="warning">
+								<ion-icon name="alert" slot="start"></ion-icon>
+								<p class="student-diet"><b>Diet: </b><br />{{ d.dietary_preferences }}</p>
+							</ion-item>
+						</ng-container>
+					</ion-item-group>
+				</ion-list>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<ion-footer>
+	<ng-container *ngIf="(bfgUser.userConfigLoaded | async) || (bfgUser.houseChanged | async)">
+		<ion-button *ngIf="bfgUser.appFunctionEnabled('chat')" bfg-btm-btn expand="full" size="large" color="primary" expand="block" size="large" [routerLink]="['/chat', this.houseId]"><strong>Message House</strong></ion-button>
+	</ng-container>
+</ion-footer>

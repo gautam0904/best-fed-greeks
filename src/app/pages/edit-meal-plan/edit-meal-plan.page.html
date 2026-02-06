@@ -1,0 +1,121 @@
+<ion-header>
+		<ion-toolbar>
+			<ion-buttons slot="start">
+				<ion-back-button defaultHref="dashboard"></ion-back-button>
+			</ion-buttons>
+			<ion-title><span class="wrap-text">Meal Plan</span></ion-title>
+		</ion-toolbar>
+	</ion-header>
+
+<ion-content>
+
+		<ion-grid>
+			<ion-row padding>
+
+				<ion-col size='12' padding *ngIf="data.repeat == '1'; else dateForm">
+					<h2>Day To Repeat</h2>
+					<ion-item>
+					<ion-label>Day To Repeat</ion-label>
+						<ion-select  [(ngModel)]="data.day" name="day" (ionChange)="mealDateChanged()">
+							<ion-select-option value="monday">Monday</ion-select-option>
+							<ion-select-option value="tuesday">Tuesday</ion-select-option>
+							<ion-select-option value="wednesday">Wednesday</ion-select-option>
+							<ion-select-option value="thursday">Thursday</ion-select-option>
+							<ion-select-option value="friday">Friday</ion-select-option>
+							<ion-select-option value="saturday">Saturday</ion-select-option>
+							<ion-select-option value="sunday">Sunday</ion-select-option>
+						</ion-select>
+					</ion-item>
+				</ion-col>
+				
+				<ng-template #dateForm>
+					<ion-col size='12' padding>
+						<form>
+							<h3>Date</h3>
+							<ion-item>
+								<ion-input
+									name="date" 
+									[(ngModel)]="data.date"
+									[liIonic4Datepicker]="datePickerObj"
+									(ionChange)="mealDateChanged()"></ion-input>
+								<!-- <ion-datetime [(ngModel)]="data.date" name="date"  displayFormat="MM/DD/YYYY" (ionChange)="mealDateChanged()"></ion-datetime> -->
+							</ion-item>
+						</form>
+					</ion-col>
+				</ng-template>
+
+				<ion-col size='12' padding *ngIf="mealPlanLoaded">
+					<h3>Meal Plan Type</h3>
+					<ion-list *ngIf="mealPlanOptions.length > 0">
+						<ion-radio-group [(ngModel)]="data.mealPlanIdx" name="mealPlanIdx" (ionChange)="mealTypeChanged()">
+							<ion-item *ngFor="let mealPlan of mealPlanOptions; index as i">
+								<ion-label>{{ mealPlan.display }}</ion-label>
+								<ion-radio slot="end" value="{{ i }}"></ion-radio>
+							</ion-item>
+						</ion-radio-group>
+					</ion-list>
+					<ion-list *ngIf="mealPlanOptions.length == 0">
+						<p>No meal plan options available for day selected</p>
+					</ion-list>
+				</ion-col>
+
+				<ion-col size="12" *ngIf="timeSlotOptions.length > 0">
+					<ion-list>
+						<ion-radio-group [(ngModel)]="data.timeSlotSignup">
+							<ion-list-header class="header">
+								Time Slots
+							</ion-list-header>
+							<ion-item *ngFor="let signup of timeSlotOptions">
+								<ion-label>
+									{{ signup.display }} [{{ signup.current_signups }} of {{ signup.max_signups }}]
+								</ion-label>
+								<ion-radio [value]="signup.value">
+								</ion-radio>
+							</ion-item>
+						</ion-radio-group>
+					</ion-list>
+				</ion-col>
+
+				<ion-col size='12' padding *ngIf="canBringGuest">
+					<h2>Bring Guest?</h2>
+					<ion-list>
+						<ion-radio-group [(ngModel)]="data.bring_guest" name="repeat">
+							<ion-item>
+								<ion-label>Yes</ion-label>
+								<ion-radio slot="end" value="1"></ion-radio>
+							</ion-item>
+							<ion-item>
+								<ion-label>No</ion-label>
+								<ion-radio slot="end" value="0"></ion-radio>
+							</ion-item>
+						</ion-radio-group>
+					</ion-list>
+				</ion-col>
+
+				<ion-col size='12' padding *ngIf="enableRepeats">
+					<h2>Repeat This Plan?</h2>
+					<p><small>*If "Yes" then meal plan will repeat for chosen day of the week until deleted.</small></p>
+					<ion-list>
+						<ion-radio-group [(ngModel)]="data.repeat" name="repeat">
+							<ion-item>
+								<ion-label>Yes</ion-label>
+								<ion-radio slot="end" value="1"></ion-radio>
+							</ion-item>
+							<ion-item>
+								<ion-label>No</ion-label>
+								<ion-radio slot="end" value="0"></ion-radio>
+							</ion-item>
+						</ion-radio-group>
+					</ion-list>
+				</ion-col>
+
+			</ion-row>
+		</ion-grid>
+
+		
+
+</ion-content>
+
+<ion-footer>
+		<ion-button bfg-btm-btn expand="full" size="large" (click)="save()" color="primary"><strong>Save</strong></ion-button>
+</ion-footer>

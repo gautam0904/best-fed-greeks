@@ -1,0 +1,61 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons color="tertiary" slot="start">
+			<ion-back-button color="tertiary" defaultHref="/welcome"></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid class="dark-grid" padding color="tertiary">
+		<ion-row padding>
+			<ion-col color="tertiary" size="12" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
+				<img src="../../assets/img/best-fed-greeks-logo.png" alt="Best Fed Greeks Logo">
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<ion-grid padding>
+		<ion-row padding>
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<ion-label color="secondary">Login</ion-label>
+				<p class="secondary-text" color="secondary">Please login to continue.</p>
+				<form #loginForm="ngForm" novalidate>
+					<ion-list class="no-padding-inline-start">
+						<ion-item>
+							<ion-input color="secondary" [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off" placeholder="Username" required>
+							</ion-input>
+						</ion-item>
+			
+						<ion-text color="danger">
+							<p [hidden]="username.valid || submitted == false" class="ion-padding-start secondary-text-danger">
+								Username is required
+							</p>
+						</ion-text>
+			
+						<ion-item>
+							<ion-input color="secondary" [(ngModel)]="login.password" name="password" type="password" #password="ngModel" placeholder="Password" required>
+							</ion-input>
+						</ion-item>
+			
+						<ion-text color="danger">
+							<p [hidden]="password.valid || submitted == false" class="ion-padding-start secondary-text-danger">
+								Password is required
+							</p>
+						</ion-text>
+					</ion-list>
+				</form>
+			</ion-col>
+		</ion-row>
+
+		<ion-row padding>
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<ion-button (click)="onLogin(loginForm)" color="secondary" type="submit" expand="block" size="large">Login</ion-button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+
+</ion-content>
+
+<ion-footer>
+		<ion-button bfg-btm-btn expand="full" size="large" color="secondary" expand="block" size="large" [routerLink]="'/password-reset'">Forgot Password?</ion-button>
+</ion-footer>

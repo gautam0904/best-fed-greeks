@@ -1,0 +1,78 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title><span class="wrap-text">{{ getTitle() }} - {{ getMealType() }}</span></ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid no-padding>
+<!-- 		<ion-row class="meal-type">
+			<ion-col size="8" offset="2" align-self-center>
+				<h2 text-center uppercase>{{ getMealType() }}</h2>
+			</ion-col>
+		</ion-row> -->
+
+		<app-meal-details
+			*ngIf="loaded"
+			[houseId]="houseId"
+			[details]="menuDayDetails"
+			[day]="day"
+			[date]=""
+			[drilldown]="false"
+			(detailsChanged)="mealDetailsChanged()"
+		></app-meal-details>
+		
+		<ion-row *ngIf="loaded && isStudent" padding style="padding-top: 0px">
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<ion-button color="primary" expand="block" size="large" *ngIf="canRequestLatePlate && !latePlateCutoffMessage" (click)="handleMealPlanClick('request_late_plate')">REQUEST LATE PLATE</ion-button>
+			</ion-col>
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<ion-list *ngIf="timeSlotSignups.length > 0">
+					<ion-radio-group [(ngModel)]="timeSlotSignup">
+						<ion-list-header class="header">
+							Time Slots
+						</ion-list-header>
+						<ion-item *ngFor="let signup of timeSlotSignups">
+							<ion-label>
+								{{ signup.display }} [{{ signup.current_signups}} of {{ signup.max_signups }}]
+							</ion-label>
+							<ion-radio [disabled]="signup.current_signups > signup.max_signups || checkInCutoffMessage" [value]="signup.value">
+							</ion-radio>
+						</ion-item>
+					</ion-radio-group>
+				</ion-list>
+				<ion-button color="success" expand="block" [disabled]="hasTimeSlots && !timeSlotSignup" size="large" *ngIf="canCheckIn && !checkInCutoffMessage" (click)="handleMealPlanClick('check_in')">CHECK IN</ion-button>
+				<ion-button color="success" expand="block" [disabled]="hasTimeSlots && !timeSlotSignup" size="large" *ngIf="canCancelCheckIn && hasTimeSlots && !checkInCutoffMessage" (click)="handleMealPlanClick('check_in')">CHANGE CHECK IN</ion-button>
+			</ion-col>
+			<ion-col size="12" size-lg="6" offset-lg="3">
+				<ion-button color="warning" expand="block" size="large" *ngIf="canCancelLatePlate && !latePlateCutoffMessage" (click)="handleMealPlanClick('cancel_late_plate')">CANCEL LATE PLATE</ion-button>
+				<ion-button color="warning" expand="block" size="large" *ngIf="canCancelCheckIn && !checkInCutoffMessage" (click)="handleMealPlanClick('cancel_check_in')">CANCEL CHECK IN</ion-button>
+				<p *ngIf="checkInCutoffMessage">{{ checkInCutoffMessage }}</p>
+				<p *ngIf="latePlateCutoffMessage">{{ latePlateCutoffMessage }}</p>
+			</ion-col>
+		</ion-row>
+		<ng-container *ngIf="(bfgUser.userConfigLoaded | async)">
+			<ion-row *ngIf="loaded && isStudent && bfgUser.appFunctionEnabled('meal_ratings')" padding>
+				<ion-col size="12" size-lg="6" offset-lg="3" no-padding>
+					<ion-button class="blue-button" expand="block" size="large" *ngIf="!hasRated" (click)="goToRate()">RATE THIS MEAL</ion-button>
+					<ion-button color="success" expand="block" size="large" *ngIf="hasRated">MEAL RATED</ion-button>
+				</ion-col>
+			</ion-row>
+		</ng-container>
+	</ion-grid>
+</ion-content>
+
+
+<ion-footer>
+	<ng-container *ngIf="(bfgUser.userConfigLoaded | async)">
+		<p *ngIf="isStudent && bfgUser.appFunctionEnabled('chat')" text-center>Need to talk to your chef?</p>
+		<ion-row>
+			<ion-col size="12">
+				<ion-button *ngIf="isStudent && bfgUser.appFunctionEnabled('chat')" bfg-btm-btn expand="full" size="large" color="primary" expand="block" size="large" [routerLink]="'/chat'"><strong>MESSAGE THE CHEF</strong></ion-button>
+			</ion-col>
+		</ion-row>
+	</ng-container>
+</ion-footer>
