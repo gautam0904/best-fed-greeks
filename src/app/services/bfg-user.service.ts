@@ -316,6 +316,9 @@ export class BFGUserService {
 						try {
 							if (!response.error) {
 								this._user = response.user;
+								if (response.token) {
+									this._user.access_token = response.token;
+								}
 								localStorage.setItem('user', JSON.stringify(this._user));
 								this._checkedStorage = true;
 							}

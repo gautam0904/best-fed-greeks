@@ -83,11 +83,25 @@ export class HttpService {
 		if (this.isNativePlatform) {
 			console.log('Using Capacitor native HTTP for POST request');
 
+			const userStr = localStorage.getItem('user');
+			let authHeader = {};
+			if (userStr) {
+				try {
+					const user = JSON.parse(userStr);
+					if (user && user.access_token) {
+						authHeader = { 'Authorization': 'Bearer ' + user.access_token };
+					}
+				} catch (e) {
+					console.error('Error parsing user for auth header', e);
+				}
+			}
+
 			const nativeOptions = {
 				url: fullUrl,
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
+					...authHeader,
 					...options.headers
 				},
 				data: params
@@ -159,10 +173,24 @@ export class HttpService {
 		if (this.isNativePlatform) {
 			console.log('Using Capacitor native HTTP for GET request');
 
+			const userStr = localStorage.getItem('user');
+			let authHeader = {};
+			if (userStr) {
+				try {
+					const user = JSON.parse(userStr);
+					if (user && user.access_token) {
+						authHeader = { 'Authorization': 'Bearer ' + user.access_token };
+					}
+				} catch (e) {
+					console.error('Error parsing user for auth header', e);
+				}
+			}
+
 			const nativeOptions = {
 				url: fullUrl,
 				headers: {
 					'Accept': 'application/json',
+					...authHeader,
 					...options.headers
 				}
 			};
