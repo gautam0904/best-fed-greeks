@@ -351,7 +351,7 @@ export class BFGUserService {
 					return;
 				}
 
-				this.http.post('bfg/user/config', {}).subscribe(
+				this.http.post('bfg/user/load-config', {}).subscribe(
 					(response) => {
 						try {
 							if (!response.error) {

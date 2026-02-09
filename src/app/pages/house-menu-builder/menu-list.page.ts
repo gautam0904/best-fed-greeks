@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
@@ -24,7 +24,8 @@ export class MenuListPage {
 		private router:Router,
 		private route: ActivatedRoute,
 		private http: HttpService,
-		private msg: MessageService
+		private msg: MessageService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	ngOnInit() {
@@ -58,20 +59,39 @@ export class MenuListPage {
 
 		this._houseId = houseId;
 
-		this.bfgUser.initializeHouses().subscribe(async myResponse => {
-			this.bfgUser.switchToHouse(houseId);
+		this.bfgUser.initializeHouses().subscribe({
+			next: async (myResponse) => {
+				this.bfgUser.switchToHouse(houseId);
 
-			this.http.post('bfg/menu-builder/load-list', {
-				bfg_house_id: houseId
-			}).subscribe(async response => {
+				this.http.post('bfg/menu-builder/load-list', {
+					bfg_house_id: houseId
+				}).subscribe({
+					next: async (response) => {
+						await this.msg.hideLoader();
+
+						this.menus = response.menus_summary.weeks;
+						this.houseName = response.house_name;
+
+						console.log(response);
+						this.loaded = true;
+						this.cdr.detectChanges();
+					},
+					error: async (error) => {
+						console.error('MenuListPage: Error loading menu list', error);
+						await this.msg.hideLoader();
+						this.msg.showToast('Error', 'Unable to load menu list.');
+						this.loaded = true;
+						this.cdr.detectChanges();
+					}
+				});
+			},
+			error: async (error) => {
+				console.error('MenuListPage: Error initializing houses', error);
 				await this.msg.hideLoader();
-
-				this.menus = response.menus_summary.weeks;
-				this.houseName = response.house_name;
-
-				console.log(response);
+				this.msg.showToast('Error', 'Unable to load houses.');
 				this.loaded = true;
-			});
+				this.cdr.detectChanges();
+			}
 		});
 	}
 }

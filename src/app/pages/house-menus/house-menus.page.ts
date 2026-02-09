@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
@@ -25,7 +25,8 @@ export class HouseMenusPage {
 		public bfgUser: BFGUserService,
 		private router:Router,
 		private http: HttpService,
-		private msg: MessageService
+		private msg: MessageService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	public async ionViewDidEnter() {
@@ -37,21 +38,40 @@ export class HouseMenusPage {
 
 		await this.msg.showLoader();
 
-		this.bfgUser.initializeHouses().subscribe(async myResonse => {
-			this.http.post('bfg/house-menus/load-summary', { }).subscribe(async response => {
-				var me = this;
+		this.bfgUser.initializeHouses().subscribe({
+			next: async (myResonse) => {
+				this.http.post('bfg/house-menus/load-summary', { }).subscribe({
+					next: async (response) => {
+						var me = this;
 
-				await this.msg.hideLoader();
+						await this.msg.hideLoader();
 
-				this.houses = response.houses;
-				this.houses.forEach(function(house) {
-					me.housesKeyedMenu[house.id] = house;
+						this.houses = response.houses;
+						this.houses.forEach(function(house) {
+							me.housesKeyedMenu[house.id] = house;
+						});
+						this.houseLocations = response.houseLocations;
+						this.user = this.bfgUser.name;
+
+						this.loaded = true;
+						this.cdr.detectChanges();
+					},
+					error: async (error) => {
+						console.error('HouseMenusPage: Error loading menu summary', error);
+						await this.msg.hideLoader();
+						this.msg.showToast('Error', 'Unable to load menu summary.');
+						this.loaded = true;
+						this.cdr.detectChanges();
+					}
 				});
-				this.houseLocations = response.houseLocations;
-				this.user = this.bfgUser.name;
-
+			},
+			error: async (error) => {
+				console.error('HouseMenusPage: Error initializing houses', error);
+				await this.msg.hideLoader();
+				this.msg.showToast('Error', 'Unable to load houses.');
 				this.loaded = true;
-			});
+				this.cdr.detectChanges();
+			}
 		})
 	}
 }

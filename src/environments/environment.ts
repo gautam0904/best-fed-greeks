@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // Production API - direct connection without CORS proxy
-  apiUrl: "http://localhost:8000/api",
+   // Production API - direct connection without CORS proxy
+  apiUrl: "/api",
   // API prefix - set to empty string to remove bfg/ prefix
   apiPrefix: "",
   // CORS proxy options - disabled
