@@ -10,3 +10,11 @@ ion-content {
         margin-right: auto;
     }
 }
+ion-footer {
+    --background: black;
+    --color: white;
+    text-align: center;
+    p {
+        margin: 1rem 0;
+    }
+}
