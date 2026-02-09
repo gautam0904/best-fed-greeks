@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
@@ -48,7 +48,8 @@ export class DayMenuPage implements OnInit {
 		private router:Router,
 		public bfgUser: BFGUserService,
 		private http: HttpService,
-		private msg: MessageService
+		private msg: MessageService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	ngOnInit() {
@@ -59,6 +60,12 @@ export class DayMenuPage implements OnInit {
 
 	        this.load();
 		});
+	}
+
+	ionViewDidEnter() {
+		if(this.loaded) {
+			this.load();
+		}
 	}
 
 	public get houseId():number {
@@ -134,6 +141,7 @@ export class DayMenuPage implements OnInit {
 				this.menuDayDetails = response.menu_day_details;
 
 				this.loaded = true;
+				this.cdr.detectChanges();
 			});
 		}
 		else {
@@ -162,6 +170,7 @@ export class DayMenuPage implements OnInit {
 				this.timeSlotSignup = response.time_slot_signup ? response.time_slot_signup : '';
 
 				this.loaded = true;
+				this.cdr.detectChanges();
 			});
 		}
 	}

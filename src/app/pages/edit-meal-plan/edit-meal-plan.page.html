@@ -16,7 +16,7 @@
 					<h2>Day To Repeat</h2>
 					<ion-item>
 					<ion-label>Day To Repeat</ion-label>
-						<ion-select  [(ngModel)]="data.day" name="day" (ionChange)="mealDateChanged()">
+						<ion-select  [(ngModel)]="data.day" name="day" (ionChange)="mealDateChanged($event)">
 							<ion-select-option value="monday">Monday</ion-select-option>
 							<ion-select-option value="tuesday">Tuesday</ion-select-option>
 							<ion-select-option value="wednesday">Wednesday</ion-select-option>
@@ -48,9 +48,9 @@
 					<h3>Meal Plan Type</h3>
 					<ion-list *ngIf="mealPlanOptions.length > 0">
 						<ion-radio-group [(ngModel)]="data.mealPlanIdx" name="mealPlanIdx" (ionChange)="mealTypeChanged()">
-							<ion-item *ngFor="let mealPlan of mealPlanOptions; index as i">
+							<ion-item button="true" *ngFor="let mealPlan of mealPlanOptions; index as i" (click)="data.mealPlanIdx = i; mealTypeChanged()">
 								<ion-label>{{ mealPlan.display }}</ion-label>
-								<ion-radio slot="end" value="{{ i }}"></ion-radio>
+								<ion-radio slot="end" [value]="i"></ion-radio>
 							</ion-item>
 						</ion-radio-group>
 					</ion-list>
@@ -79,12 +79,12 @@
 				<ion-col size='12' padding *ngIf="canBringGuest">
 					<h2>Bring Guest?</h2>
 					<ion-list>
-						<ion-radio-group [(ngModel)]="data.bring_guest" name="repeat">
-							<ion-item>
+						<ion-radio-group [(ngModel)]="data.bring_guest" name="bring_guest">
+							<ion-item button="true" (click)="data.bring_guest = '1'">
 								<ion-label>Yes</ion-label>
 								<ion-radio slot="end" value="1"></ion-radio>
 							</ion-item>
-							<ion-item>
+							<ion-item button="true" (click)="data.bring_guest = '0'">
 								<ion-label>No</ion-label>
 								<ion-radio slot="end" value="0"></ion-radio>
 							</ion-item>
@@ -96,12 +96,12 @@
 					<h2>Repeat This Plan?</h2>
 					<p><small>*If "Yes" then meal plan will repeat for chosen day of the week until deleted.</small></p>
 					<ion-list>
-						<ion-radio-group [(ngModel)]="data.repeat" name="repeat">
-							<ion-item>
+						<ion-radio-group [(ngModel)]="data.repeat" name="repeat" (ionChange)="mealDateChanged()">
+							<ion-item button="true" (click)="data.repeat = '1'">
 								<ion-label>Yes</ion-label>
 								<ion-radio slot="end" value="1"></ion-radio>
 							</ion-item>
-							<ion-item>
+							<ion-item button="true" (click)="data.repeat = '0'">
 								<ion-label>No</ion-label>
 								<ion-radio slot="end" value="0"></ion-radio>
 							</ion-item>

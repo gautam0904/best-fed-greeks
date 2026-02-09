@@ -92,6 +92,7 @@ export class MealDetailsComponent implements OnInit {
 			this.details[idx].late_plate = response.late_plate;
 
 			this.detailsChanged.emit();
+			this._detailsUpdated.next(true);
 		});
 	}
 

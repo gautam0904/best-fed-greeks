@@ -10,8 +10,7 @@ import moment from 'moment';
 @Directive({
   standalone: false,
   selector: '[liIonic4Datepicker]',
-  exportAs: 'liIonic4Datepicker',
-  providers: [NgModel]
+  exportAs: 'liIonic4Datepicker'
 })
 export class LiIonic4DatepickerDirective implements OnInit {
 
@@ -19,7 +18,8 @@ export class LiIonic4DatepickerDirective implements OnInit {
 
   closeIcon;
   selectedDate: any = {};
-  // isModalOpen: any = false;
+  isModalOpen: boolean = false;
+  isUpdateFromDirective: boolean = false;
 
   constructor(
     private modalCtrl: ModalController,
@@ -31,6 +31,8 @@ export class LiIonic4DatepickerDirective implements OnInit {
 
   ngOnInit() {
     // console.log('config.yearInAscending : ' + this.inputDateConfig.yearInAscending);
+
+    this.renderer2.setAttribute(this.el.nativeElement, 'readonly', 'readonly');
 
     if (this.inputDateConfig.clearButton !== false) {
       this.closeIcon = document.createElement('ion-icon');
@@ -58,7 +60,9 @@ export class LiIonic4DatepickerDirective implements OnInit {
     const self = this;
     this.ngModel.valueChanges.subscribe((value) => {
       // console.log('ngModel value =>', value);
-      self.selectedDate.date = value;
+      if (!this.isUpdateFromDirective) {
+        self.selectedDate.date = value;
+      }
       if (this.inputDateConfig.clearButton !== false) {
         if (!value) {
           this.closeIcon.style.visibility = 'hidden';
@@ -70,7 +74,9 @@ export class LiIonic4DatepickerDirective implements OnInit {
 
     this.control.control.valueChanges.subscribe((value) => {
       // console.log('formcontrol value =>', value);
-      self.selectedDate.date = value;
+       if (!this.isUpdateFromDirective) {
+        self.selectedDate.date = value;
+      }
       if (this.inputDateConfig.clearButton !== false) {
         if (!value) {
           this.closeIcon.style.visibility = 'hidden';
@@ -85,26 +91,18 @@ export class LiIonic4DatepickerDirective implements OnInit {
     }
   }
 
-  // @HostListener('click')
-  // onClick() {
-  //   // console.log('on click of component =>', this.inputDateConfig);
-  //   if (!this.isModalOpen) {
-  //     this.isModalOpen = true;
-  //     this.openDatePicker();
-  //   }
-  // }
-
-  @HostListener('ionFocus')
-  onFocus() {
-    // if (!this.isModalOpen) {
-    // this.isModalOpen = true;
-    this.openDatePicker();
-    // }
+  @HostListener('click', ['$event'])
+  onFocus(ev: UIEvent) {
+    console.log('DEBUG: Input clicked');
+    if (!this.isModalOpen) {
+      this.openDatePicker();
+    }
   }
 
 
   async openDatePicker() {
     // console.log('openDatePicker');
+    this.isModalOpen = true;
 
     const datePickerModal = await this.modalCtrl.create({
       component: Ionic4DatepickerModalComponent,
@@ -115,13 +113,26 @@ export class LiIonic4DatepickerDirective implements OnInit {
 
     datePickerModal.onDidDismiss()
       .then((data) => {
-        // this.isModalOpen = false;
+        setTimeout(() => {
+          this.isModalOpen = false;
+        }, 300);
+        
         if (data.data && data.data.date && data.data.date !== 'Invalid date') {
+          this.isUpdateFromDirective = true;
           this.selectedDate.date = data.data.date;
           this.control.control.setValue(data.data.date);
           this.ngModel.update.emit(data.data.date);
+          
+          const event = new CustomEvent('ionChange', { 
+            detail: { value: data.data.date },
+            bubbles: true 
+          });
+          this.el.nativeElement.dispatchEvent(event);
+
+          setTimeout(() => {
+             this.isUpdateFromDirective = false;
+          }, 100);
         }
       });
   }
 }
-

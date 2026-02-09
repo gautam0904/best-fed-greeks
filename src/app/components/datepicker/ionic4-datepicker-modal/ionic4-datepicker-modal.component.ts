@@ -178,9 +178,10 @@ export class Ionic4DatepickerModalComponent implements OnInit {
 
   // Date selected
   dateSelected(selectedDate) {
-    // console.log('dateSelected =>', selectedDate);
     if (selectedDate && !selectedDate.disabled) {
-      if (!selectedDate || Object.keys(selectedDate).length === 0) { return; }
+      if (!selectedDate || Object.keys(selectedDate).length === 0) { 
+        return; 
+      }
       this.isSelectedDateFound = true;
       this.selctedDateEpoch = selectedDate.epoch;
       this.selectedDateString = this.formatDate();
@@ -350,8 +351,11 @@ export class Ionic4DatepickerModalComponent implements OnInit {
 
   // for dismiss modal
   closeModal(selectedDate) {
-    // console.log('closeModal => ', selectedDate);
-    this.modalCtrl.getTop();
+    console.log('DEBUG: closeModal called with', selectedDate);
+    if (selectedDate === null) {
+      this.modalCtrl.dismiss(null);
+      return;
+    }
     const formattedDate = moment(selectedDate).format(this.mainObj.dateFormat);
     this.modalCtrl.dismiss({ 'date': formattedDate });
   }

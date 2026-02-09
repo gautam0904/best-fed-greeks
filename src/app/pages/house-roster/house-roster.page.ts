@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
@@ -68,7 +68,8 @@ export class HouseRosterPage implements OnInit {
 		private router:Router,
 		public bfgUser: BFGUserService,
 		private http: HttpService,
-		private msg: MessageService
+		private msg: MessageService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	ngOnInit() {
@@ -177,6 +178,7 @@ export class HouseRosterPage implements OnInit {
 			this.finalized = !!response.finalized;
 
 			this.loaded = true;
+			this.cdr.detectChanges();
 		});
 	}
 }

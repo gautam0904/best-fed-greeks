@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 
 import { NgForm } from '@angular/forms';
 
@@ -30,7 +30,8 @@ export class ProfilePage {
 		public bfgUser: BFGUserService,
 		private push: BFGPushNotificationService,
 		private http: HttpService,
-		private msg: MessageService
+		private msg: MessageService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	public async ionViewDidEnter() {
@@ -51,6 +52,7 @@ export class ProfilePage {
 			// this.date = response.date;
 
 			this.loaded = true;
+			this.cdr.detectChanges();
 		});
 	}
 

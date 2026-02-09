@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NavController } from '@ionic/angular';
@@ -40,7 +40,8 @@ export class MealRatingPage {
 		private mealPlans: BFGMealPlanService,
 		private http: HttpService,
 		private msg: MessageService,
-		public router: Router
+		public router: Router,
+		private cdr: ChangeDetectorRef
 	) {
 		console.log(this.router.getCurrentNavigation());
 		let extras = this.router.getCurrentNavigation().extras;
@@ -76,6 +77,7 @@ export class MealRatingPage {
 			else if (this.mealTypes.length > 0) {
 				this.mealType = this.mealTypes[0];
 			}
+			this.cdr.detectChanges();
 		});
 	}
 
@@ -97,6 +99,7 @@ export class MealRatingPage {
 			this.menuDayDetails = response.menu_day_details;
 			this.hasMealServiceForDay = response.has_meal_service;
 			this.menuDayDetailsLoaded = true;
+			this.cdr.detectChanges();
 		});
 	}
 
