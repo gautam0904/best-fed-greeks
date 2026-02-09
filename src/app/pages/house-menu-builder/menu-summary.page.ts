@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
@@ -43,7 +43,8 @@ export class MenuSummaryPage {
 		private router:Router,
 		private route: ActivatedRoute,
 		private http: HttpService,
-		private msg: MessageService
+		private msg: MessageService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	ngOnInit() {
@@ -84,9 +85,16 @@ export class MenuSummaryPage {
 			bfg_house_id: this._houseId,
 			start: this._date,
 			end: moment(this._date).add('6', 'days').format('MM/DD/YYYY')
-		}).subscribe(async response => {
-			await this.msg.hideLoader();
-			await this.loadMenuSummary(this._houseId);
+		}).subscribe({
+			next: async (response) => {
+				await this.msg.hideLoader();
+				await this.loadMenuSummary(this._houseId);
+			},
+			error: async (error) => {
+				console.error('MenuSummaryPage: Error submitting menu', error);
+				await this.msg.hideLoader();
+				this.msg.showToast('Error', 'Unable to submit menu.');
+			}
 		});
 	}
 
@@ -97,10 +105,17 @@ export class MenuSummaryPage {
 			bfg_house_id: this._houseId,
 			start: this._date,
 			end: moment(this._date).add('6', 'days').format('MM/DD/YYYY')
-		}, { responseType:'blob' }).subscribe(async response => {
-			await this.msg.hideLoader();
-			
-			saveAs(response, 'menu-' + this._houseId + '-week-of-' + this._date);
+		}, { responseType:'blob' }).subscribe({
+			next: async (response) => {
+				await this.msg.hideLoader();
+				
+				saveAs(response, 'menu-' + this._houseId + '-week-of-' + this._date);
+			},
+			error: async (error) => {
+				console.error('MenuSummaryPage: Error printing menu', error);
+				await this.msg.hideLoader();
+				this.msg.showToast('Error', 'Unable to print menu.');
+			}
 		});
 	}
 
@@ -110,44 +125,63 @@ export class MenuSummaryPage {
 
 		this._houseId = houseId;
 
-		this.bfgUser.initializeHouses().subscribe(async myResponse => {
-			this.bfgUser.switchToHouse(houseId);
+		this.bfgUser.initializeHouses().subscribe({
+			next: async (myResponse) => {
+				this.bfgUser.switchToHouse(houseId);
 
-			this.http.post('bfg/menu-builder/load-menu-summary', {
-				bfg_house_id: houseId,
-				monday_of_week: this._date
-			}).subscribe(async response => {
+				this.http.post('bfg/menu-builder/load-menu-summary', {
+					bfg_house_id: houseId,
+					monday_of_week: this._date
+				}).subscribe({
+					next: async (response) => {
+						await this.msg.hideLoader();
+
+						let weekWithDetails = response.menu_summary.week_with_details;
+
+						this.status = weekWithDetails.menu_status;
+						this.deadline = weekWithDetails.deadline;
+						this.mealTypeStatuses = weekWithDetails.meal_type_statuses;
+						this.mealDateStatuses = weekWithDetails.meal_date_statuses;
+						this.houseName = response.menu_summary.house_name;
+
+
+						this.distinctComments = weekWithDetails.distinct_comments;
+
+						if(this.status == 'Can Submit' || this.status == 'Changes Needed') {
+							this.canSubmit = true;
+							this.notApproved = true;
+							this.canPrint = false;
+						}
+						else if(this.status != 'Approved') {
+							this.notApproved = true;
+							this.canSubmit = false;
+							this.canPrint = false;
+						}
+						else if(this.status == 'Approved') {
+							this.notApproved = false;
+							this.canSubmit = false;
+							this.canPrint = true;
+						}
+
+						this.loaded = true;
+						this.cdr.detectChanges();
+					},
+					error: async (error) => {
+						console.error('MenuSummaryPage: Error loading menu summary', error);
+						await this.msg.hideLoader();
+						this.msg.showToast('Error', 'Unable to load menu summary.');
+						this.loaded = true;
+						this.cdr.detectChanges();
+					}
+				});
+			},
+			error: async (error) => {
+				console.error('MenuSummaryPage: Error initializing houses', error);
 				await this.msg.hideLoader();
-
-				let weekWithDetails = response.menu_summary.week_with_details;
-
-				this.status = weekWithDetails.menu_status;
-				this.deadline = weekWithDetails.deadline;
-				this.mealTypeStatuses = weekWithDetails.meal_type_statuses;
-				this.mealDateStatuses = weekWithDetails.meal_date_statuses;
-				this.houseName = response.menu_summary.house_name;
-
-
-				this.distinctComments = weekWithDetails.distinct_comments;
-
-				if(this.status == 'Can Submit' || this.status == 'Changes Needed') {
-					this.canSubmit = true;
-					this.notApproved = true;
-					this.canPrint = false;
-				}
-				else if(this.status != 'Approved') {
-					this.notApproved = true;
-					this.canSubmit = false;
-					this.canPrint = false;
-				}
-				else if(this.status == 'Approved') {
-					this.notApproved = false;
-					this.canSubmit = false;
-					this.canPrint = true;
-				}
-
+				this.msg.showToast('Error', 'Unable to load houses.');
 				this.loaded = true;
-			});
+				this.cdr.detectChanges();
+			}
 		});
 	}
 }

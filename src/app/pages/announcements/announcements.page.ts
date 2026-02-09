@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
@@ -22,7 +22,8 @@ export class AnnouncementsPage {
 		public bfgUser: BFGUserService,
 		private router:Router,
 		private http: HttpService,
-		private msg: MessageService
+		private msg: MessageService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	public async ionViewDidEnter() {
@@ -34,13 +35,23 @@ export class AnnouncementsPage {
 
 		await this.msg.showLoader();
 
-		this.http.post('bfg/house-dashboard/load-announcements', { }).subscribe(async response => {
-			await this.msg.hideLoader();
+		this.http.post('bfg/house-dashboard/load-announcements', { }).subscribe({
+			next: async (response) => {
+				await this.msg.hideLoader();
 
-			this.announcements = response.announcements;
-			this.user = this.bfgUser.name
+				this.announcements = response.announcements;
+				this.user = this.bfgUser.name
 
-			this.loaded = true;
+				this.loaded = true;
+				this.cdr.detectChanges();
+			},
+			error: async (error) => {
+				console.error('AnnouncementsPage: Error loading announcements', error);
+				await this.msg.hideLoader();
+				this.msg.showToast('Error', 'Unable to load announcements.');
+				this.loaded = true;
+				this.cdr.detectChanges();
+			}
 		});
 	}
 }

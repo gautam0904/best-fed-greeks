@@ -36,7 +36,7 @@
     "@capacitor/push-notifications": "^8.0.0",
     "@capacitor/status-bar": "^8.0.0",
     "@ionic/angular": "^8.7.0",
-    "@ng-select/ng-select": "^13.0.0",
+    "@ng-select/ng-select": "^15.0.0",
     "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
     "jetifier": "^2.0.0",
