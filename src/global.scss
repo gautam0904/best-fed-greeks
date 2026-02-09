@@ -361,6 +361,12 @@ ion-footer {
 ion-button {
 	font-size: 1.25rem;
 	font-weight: 700;
+	--border-radius: 4px; /* default radius if needed */
+}
+
+ion-button[bfg-btm-btn] {
+	--border-radius: 0 !important;
+	border-radius: 0 !important;
 }
 
 .blue-button {
