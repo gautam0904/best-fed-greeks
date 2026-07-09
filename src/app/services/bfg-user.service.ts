@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpService } from './common/http.service';
 
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { BFGPushNotificationService } from './bfg-push-notification.service';
 
@@ -23,375 +24,287 @@ export class BFGUserService {
 	public userConfigLoaded = this._userConfigLoaded.asObservable();
 	public houseChanged = this._houseChanged.asObservable();
 
-	constructor(private http: HttpService, private router: Router, private push: BFGPushNotificationService) {
-		// Clear any cached data on app start
-		this.clearCachedData();
-	}
-
-	private clearCachedData() {
-		try {
-			// Clear any cached API responses
-			if ('caches' in window) {
-				caches.keys().then(cacheNames => {
-					cacheNames.forEach(cacheName => {
-						caches.delete(cacheName);
-					});
-				});
-			}
-			
-			// Clear localStorage items that might contain old API URLs
-			const keysToKeep = ['user', 'push-notification-config'];
-			const allKeys = Object.keys(localStorage);
-			allKeys.forEach(key => {
-				if (!keysToKeep.includes(key)) {
-					localStorage.removeItem(key);
-				}
-			});
-		} catch (error) {
-			console.warn('Error clearing cached data:', error);
-		}
-	}
-
-	// Add missing methods that other parts of the app expect
-	public get name(): string {
-		try {
-			return this._user ? this._user.name : '';
-		} catch (error) {
-			console.error('Error getting user name:', error);
-			return '';
-		}
-	}
-
-	public set name(value: string) {
-		try {
-			if (this._user) {
-				this._user.name = value;
-				localStorage.setItem('user', JSON.stringify(this._user));
-			}
-		} catch (error) {
-			console.error('Error setting user name:', error);
-		}
-	}
-
-	public get refreshToken(): string {
-		try {
-			return this._user ? this._user.refresh_token : '';
-		} catch (error) {
-			console.error('Error getting refresh token:', error);
-			return '';
-		}
-	}
-
-	public getId(): string {
-		try {
-			return this._user ? this._user.id : '';
-		} catch (error) {
-			console.error('Error getting user ID:', error);
-			return '';
-		}
-	}
-
-	public initializeHouses(): Observable<any> {
-		return new Observable((observer) => {
-			try {
-				// This method is called by other components to initialize houses
-				// The houses are already loaded in fetchUserConfig, so this is just a no-op
-				console.log('Houses initialization requested');
-				observer.next({});
-				observer.complete();
-			} catch (error) {
-				console.error('Error initializing houses:', error);
-				observer.error(error);
-			}
-		});
-	}
-
-	public register(userData: any): Observable<any> {
-		return new Observable((observer) => {
-			try {
-				this.http.post('bfg/auth/register', userData).subscribe(
-					(response) => {
-						try {
-							observer.next(response);
-							observer.complete();
-						} catch (error) {
-							console.error('Error processing register response:', error);
-							observer.error(error);
-						}
-					},
-					(error) => {
-						console.error('Register error:', error);
-						observer.error(error);
-					}
-				);
-			} catch (error) {
-				console.error('Error in register method:', error);
-				observer.error(error);
-			}
-		});
-	}
+	constructor(private http: HttpService, private router: Router, private push: BFGPushNotificationService) {}
 
 	public fetchUser(): Observable<any> {
 		return new Observable((observer) => {
-			try {
-				observer.next(this.getOrRestoreUser());
-				observer.complete();
-			} catch (error) {
-				console.error('Error fetching user:', error);
-				observer.error(error);
-			}
+			observer.next(this.getOrRestoreUser());
+			observer.complete();
 
 			return () => {};
 		});
 	}
 
 	public get user() {
-		try {
-			return this.getOrRestoreUser();
-		} catch (error) {
-			console.error('Error getting user:', error);
-			return null;
-		}
+		return this.getOrRestoreUser();
 	}
 
 	public loginMockUser() {
-		try {
-			this._user = {
-				name:'Test User',
-				house:'Delta Tau Delta',
-				access_token:'not_a_secret'
-			};
+		this._user = {
+			name:'Test User',
+			house:'Delta Tau Delta',
+			access_token:'not_a_secret'
+		};
 
-			localStorage.setItem('user', JSON.stringify(this._user));
-		} catch (error) {
-			console.error('Error setting mock user:', error);
-		}
+		localStorage.setItem('user', JSON.stringify(this._user));
 	}
 
 	public setTokenFromResponse(token:string) {
-		try {
-			if (this._user) {
-				this._user.access_token = token;
-				localStorage.setItem('user', JSON.stringify(this._user));
-			}
-		} catch (error) {
-			console.error('Error setting token:', error);
-		}
+		this._user.access_token = token;
+		localStorage.setItem('user', JSON.stringify(this._user));
 	}
 
 	public clearStoredUser() {
-		try {
-			if (this.push && typeof this.push.clear === 'function') {
-				this.push.clear();
-			}
-			this._user = undefined;
-			localStorage.removeItem('user');
-		} catch (error) {
-			console.error('Error clearing stored user:', error);
-		}
+		this.push.clear();
+		this._user = undefined;
+		localStorage.removeItem('user');
 	}
 
 	public isAuthenticated(): boolean {
-		try {
-			let user = this._user;
-			if(!this._checkedStorage) {
-				user = this.getOrRestoreUser();
-				this._checkedStorage = true;
-			}
-			return !!user;
-		} catch (error) {
-			console.error('Error checking authentication:', error);
-			return false;
+		let user = this._user;
+		if(!this._checkedStorage) {
+			user = this.getOrRestoreUser();
+			this._checkedStorage = true;
 		}
+		return !!user;
 	}
 
 	private getOrRestoreUser() {
-		try {
-			if(!this._user && localStorage.getItem('user')) {
-				this._user = JSON.parse(localStorage.getItem('user'));
-			}
-
-			if(!this._userConfigLoaded.value && !this._isFetchingConfig) {
-				this._isFetchingConfig = true;
-				this.fetchUserConfig().subscribe(() => {});
-			}
-
-			return this._user;
-		} catch (error) {
-			console.error('Error getting or restoring user:', error);
-			return null;
+		if(!this._user && localStorage.getItem('user')) {
+			this._user = JSON.parse(localStorage.getItem('user'));
 		}
+
+		// Only fetch config if user is logged in and config hasn't been loaded yet
+		if(this._user && !this._userConfigLoaded.value && !this._isFetchingConfig) {
+			this._isFetchingConfig = true;
+			this.fetchUserConfig().subscribe(() => {}, () => {
+				this._isFetchingConfig = false;
+			});
+		}
+
+		return this._user;
 	}
 
 	public appFunctionEnabled(func) {
-		try {
-			return !!this._appFunctions[func];
-		} catch (error) {
-			console.error('Error checking app function:', error);
-			return false;
-		}
+		return !!this._appFunctions[func];
 	}
 
 	public switchToHouse(houseId) {
-		try {
-			if(this.isStudent()) return;
+		if(this.isStudent()) return;
 
-			this._currentHouseId = houseId;
-			let myHouse = null;
-			for(let house of this.houses) {
-				if(house.id == this._currentHouseId) {
-					myHouse = house;
-					break;
-				}
+		this._currentHouseId = houseId;
+		let myHouse = null;
+		for(let house of this.houses) {
+			if(house.id == this._currentHouseId) {
+				myHouse = house;
+				break;
 			}
-
-			// @todo set these from the houses config
-		} catch (error) {
-			console.error('Error switching house:', error);
 		}
+
+		// @todo set these from the houses config
+		this._appFunctions = myHouse && myHouse.enabled_app_functions ? myHouse.enabled_app_functions : {};
+		this._houseChanged.next(true);
 	}
 
-	public get houses() {
-		try {
-			return this._houses;
-		} catch (error) {
-			console.error('Error getting houses:', error);
-			return [];
-		}
+	public login(username:string, password:string): Observable<any> {
+		return new Observable((observer) => {
+			this.http.post('auth/login', { login: username, password: password }).subscribe(async response => {
+				if(response.user) {
+					this._user = response.user;
+					this._user.access_token = response.token;
+					localStorage.setItem('user', JSON.stringify(this._user));
+					await this.fetchUserConfig().toPromise();
+				}
+
+				observer.next(response);
+				observer.complete();
+			});
+		});
 	}
 
-	public get currentHouseId() {
-		try {
-			return this._currentHouseId;
-		} catch (error) {
-			console.error('Error getting current house ID:', error);
-			return 0;
-		}
-	}
-
-	public get houseLocations() {
-		try {
-			return this._houseLocations;
-		} catch (error) {
-			console.error('Error getting house locations:', error);
-			return [];
-		}
+	public logout() {
+		this.clearStoredUser();
+		this._houses = [];
+		this._houseChanged.next(false);
+		this._userConfigLoaded.next(false);
+		this._currentHouseId = 0;
+		this._appFunctions = {};
+		this._isFetchingConfig = false;
+		this._checkedStorage = false;
+		this.router.navigateByUrl('/login');
 	}
 
 	public isStudent(): boolean {
-		try {
-			return this._user && this._user.user_type === 'student';
-		} catch (error) {
-			console.error('Error checking if user is student:', error);
-			return false;
+		let isStudent = false;
+		if(this._user) {
+			isStudent = !this._user.role_id; // Default to student this way! They aren't backend
 		}
+
+		return isStudent;
 	}
 
 	public isChef(): boolean {
-		try {
-			return this._user && this._user.user_type === 'chef';
-		} catch (error) {
-			console.error('Error checking if user is chef:', error);
-			return false;
+		let isChef = false;
+
+		if(this._user) {
+			isChef = this._user.role && this._user.role.code == 'chef';
 		}
+
+		return isChef;
 	}
 
 	public isSuperChef(): boolean {
-		try {
-			return this._user && this._user.user_type === 'super_chef';
-		} catch (error) {
-			console.error('Error checking if user is super chef:', error);
-			return false;
+		let isSuperChef = false;
+
+		if(this._user) {
+			isSuperChef = this._user.role && (this._user.role.code == 'super-chef' || this._user.role.code == 'super-chef-admin');
+		}
+
+		return isSuperChef;
+	}
+
+	public getId(): any {
+		return this._user ? this._user.id : 0;
+	}
+
+	public get houses(): any {
+		return this._houses;
+	}
+
+	// Useful for chefs and detcting when to use back buttons or not
+	public set houses(houses:any) {
+		this._houses = houses;
+	}
+
+	public get houseLocations(): any {
+		return this._houseLocations;
+	}
+
+	// Useful for chefs and detcting when to use back buttons or not
+	public set houseLocations(houseLocations:any) {
+		this._houseLocations = houseLocations;
+	}
+
+	public get name() {
+		let name = '';
+
+		if(this.isStudent()) {
+			name = this.user.name;
+		}
+		else if(this.isChef() || this.isSuperChef()) {
+			name = this.user.first_name + ' ' + this.user.last_name;
+		}
+
+		return name;
+	}
+
+	// Only for student changing name right now. Need more if allowing chef to change name in app
+	public set name(name:string) {
+		this.user.name = name;
+
+		if(JSON.stringify(this._user)) {
+			localStorage.setItem('user', JSON.stringify(this._user));
 		}
 	}
 
-	public login(username: string, password: string): Observable<any> {
-		return new Observable((observer) => {
-			try {
-				// Force clear any cached data before login
-				this.clearCachedData();
-				
-				this.http.post('auth/login', { login: username, password }).subscribe(
-					(response) => {
-						try {
-							if (!response.error) {
-								this._user = response.user;
-								if (response.token) {
-									this._user.access_token = response.token;
-								}
-								localStorage.setItem('user', JSON.stringify(this._user));
-								this._checkedStorage = true;
-							}
-							observer.next(response);
-							observer.complete();
-						} catch (error) {
-							console.error('Error processing login response:', error);
-							observer.error(error);
-						}
-					},
-					(error) => {
-						console.error('Login error:', error);
-						observer.error(error);
+	public initializeHouses(): Observable<any> {
+		if(this.isStudent()) {
+			// Students do not need this. Simply ignore if called for some reason
+			return new Observable((observer) => {
+				observer.next(true);
+				observer.complete();
+			});
+		}
+		else {
+			return new Observable((observer) => {
+				if(this._houses.length > 0) {
+					if(this._currentHouseId) {
+						this.switchToHouse(this._currentHouseId);
 					}
-				);
-			} catch (error) {
-				console.error('Error in login method:', error);
-				observer.error(error);
+
+					observer.next(true);
+					observer.complete();
+					return;
+				}
+
+				// We have a specific registration route since we need an access code based of a house
+				this.http.post('bfg/house-dashboard/load-houses', { }).subscribe(async response => {
+					this.houses = response.houses;
+					this.houseLocations = response.house_locations;
+
+					if(this._currentHouseId) {
+						this.switchToHouse(this._currentHouseId);
+					}
+
+					observer.next(true);
+					observer.complete();
+				});
+			});
+		}
+	}
+
+	public refreshToken(): Observable<any>  {
+		return new Observable((observer) => {
+			let user = this.getOrRestoreUser();
+
+			if(user && user.access_token) {
+				this.http.post('auth/refresh-token', { token: user.access_token}).subscribe(response => {
+					if(response.token && this._user) {
+						this._user.access_token = response.token;
+						localStorage.setItem('user', JSON.stringify(this._user));
+					}
+					else if(this._user) {
+						this._user.access_token = '';
+						localStorage.setItem('user', JSON.stringify(this._user));
+					}
+
+					observer.next(this._user);
+					observer.complete();
+				});
 			}
+			else {
+				observer.next();
+				observer.complete();
+			}
+		});
+	}
+
+	public register(userInfo:any): Observable<any> {
+		return new Observable((observer) => {
+			// We have a specific registration route since we need an access code based of a house
+			this.http.post('bfg/auth/register', userInfo).subscribe(async response => {
+				observer.next(response);
+				observer.complete();
+			});
 		});
 	}
 
 	public fetchUserConfig(): Observable<any> {
 		return new Observable((observer) => {
-			try {
-				if (!this.isAuthenticated()) {
-					this._userConfigLoaded.next(true);
-					observer.next({});
+			this.http.post('bfg/user/load-config', {}).pipe(
+				catchError((err) => {
+					console.warn('Could not load user config (API unreachable?):', err.status || err.message);
+					this._isFetchingConfig = false;
+					observer.next(null);
 					observer.complete();
-					return;
+					return of(null);
+				})
+			).subscribe(response => {
+				if(!response) return;
+
+				if(response && response.push_notifications) {
+					this.push.handlePushNotificationConfig(response.push_notifications);
 				}
 
-				this.http.post('bfg/user/load-config', {}).subscribe(
-					(response) => {
-						try {
-							if (!response.error) {
-								this._houses = response.houses || [];
-								this._houseLocations = response.house_locations || [];
-								this._appFunctions = response.app_functions || {};
-								
-								if (this._houses.length > 0 && !this._currentHouseId) {
-									this._currentHouseId = this._houses[0].id;
-								}
-							}
-							this._userConfigLoaded.next(true);
-							observer.next(response);
-							observer.complete();
-						} catch (error) {
-							console.error('Error processing user config response:', error);
-							this._userConfigLoaded.next(true);
-							observer.error(error);
-						}
-					},
-					(error) => {
-						console.error('User config error:', error);
-						this._userConfigLoaded.next(true);
-						observer.error(error);
-					}
-				);
-			} catch (error) {
-				console.error('Error in fetchUserConfig method:', error);
-				this._userConfigLoaded.next(true);
-				observer.error(error);
-			}
-		});
-	}
+				if(response && response.enabled_app_functions) {
+					this._appFunctions = response.enabled_app_functions;
+				}
 
-	public logout(): void {
-		try {
-			this.clearStoredUser();
-			this.router.navigateByUrl('/login');
-		} catch (error) {
-			console.error('Error during logout:', error);
-		}
+				observer.next(response);
+				observer.complete();
+
+				this._userConfigLoaded.next(true);
+			});
+		});
 	}
 }

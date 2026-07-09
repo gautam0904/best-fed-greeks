@@ -7,7 +7,6 @@ import { MessageService } from '../../services/common/message.service';
 import { BFGUserService } from '../../services/bfg-user.service';
 
 @Component({
-  standalone: false,
 	selector: 'app-technical-support',
 	templateUrl: './technical-support.page.html',
 	styleUrls: ['./technical-support.page.scss'],

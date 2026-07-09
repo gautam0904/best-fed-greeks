@@ -6,7 +6,6 @@ import { ToastController, LoadingController } from '@ionic/angular';
 import { BFGUserService } from '../../services/bfg-user.service';
 
 @Component({
-  standalone: false,
 	selector: 'page-register',
 	templateUrl: 'register.html',
 	styleUrls: ['./register.scss'],

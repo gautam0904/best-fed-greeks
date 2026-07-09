@@ -24,7 +24,9 @@ import { Ionic4DatepickerComponent } from './ionic4-datepicker.component';
     CommonModule,
     FormsModule
   ],
-
+  entryComponents: [
+    Ionic4DatepickerModalComponent
+  ],
   providers: [
 
   ]

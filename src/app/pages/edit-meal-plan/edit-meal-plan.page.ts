@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NavController } from '@ionic/angular';
@@ -10,10 +10,9 @@ import { BFGUserService } from '../../services/bfg-user.service';
 
 import { map } from 'rxjs/operators';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
 	selector: 'app-edit-meal-plan',
 	templateUrl: './edit-meal-plan.page.html',
 	styleUrls: ['./edit-meal-plan.page.scss'],
@@ -41,7 +40,6 @@ export class EditMealPlanPage {
 		private msg: MessageService,
 		public router: Router,
 		private nav: NavController,
-		private cdr: ChangeDetectorRef
 	) {
 		console.log(this.router.getCurrentNavigation());
 		let extras = this.router.getCurrentNavigation().extras;
@@ -55,25 +53,18 @@ export class EditMealPlanPage {
 		this.data.day = moment(this.data.date).format('dddd').toLowerCase();
 	}
 
-	public async mealDateChanged(event:any = null) {
-		let day = this.data.day;
-		if(event && event.detail && event.detail.value) {
-			day = event.detail.value;
-			this.data.day = day; 
-		}
-
+	public async mealDateChanged() {
 		await this.msg.showLoader('Loading meal types, please wait...');
 
 		let dayOfWeekFromDay = '';
 
 		if(this.data.repeat == '0') {
 			this.data.day = moment(this.data.date).format('dddd').toLowerCase();
-			day = this.data.day;
 		}
 
 		this.mealPlanLoaded = false;
 		this.mealPlans.loadAvailableMealPlanOptionsFromDay(
-			day
+			this.data.day
 		).subscribe(async mealPlanOptions => {
 			await this.msg.hideLoader();
 
@@ -85,7 +76,6 @@ export class EditMealPlanPage {
 			if(this.data.mealPlanIdx !== undefined && this.data.mealPlanIdx >= this.mealPlanOptions.length) {
 				this.data.mealPlanIdx = undefined
 			}
-			this.cdr.detectChanges();
 		});
 	}
 
@@ -125,7 +115,6 @@ export class EditMealPlanPage {
 			await this.msg.hideLoader();
 
 			this.timeSlotOptions = timeSlots;
-			this.cdr.detectChanges();
 		});
 	}
 

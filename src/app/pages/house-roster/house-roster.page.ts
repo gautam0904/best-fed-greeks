@@ -1,14 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
 import { MessageService } from '../../services/common/message.service';
 import { BFGUserService } from '../../services/bfg-user.service';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
 	selector: 'app-house-roster',
 	templateUrl: './house-roster.page.html',
 	styleUrls: ['./house-roster.page.scss'],
@@ -68,8 +67,7 @@ export class HouseRosterPage implements OnInit {
 		private router:Router,
 		public bfgUser: BFGUserService,
 		private http: HttpService,
-		private msg: MessageService,
-		private cdr: ChangeDetectorRef
+		private msg: MessageService
 	) {}
 
 	ngOnInit() {
@@ -178,7 +176,6 @@ export class HouseRosterPage implements OnInit {
 			this.finalized = !!response.finalized;
 
 			this.loaded = true;
-			this.cdr.detectChanges();
 		});
 	}
 }

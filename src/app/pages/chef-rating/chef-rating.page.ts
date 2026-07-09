@@ -6,10 +6,9 @@ import { MessageService } from '../../services/common/message.service';
 import { BFGUserService } from '../../services/bfg-user.service';
 import { BFGMealPlanService } from '../../services/bfg-meal-plan.service';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
 	selector: 'app-chef-rating',
 	templateUrl: './chef-rating.page.html',
 	styleUrls: ['./chef-rating.page.scss'],

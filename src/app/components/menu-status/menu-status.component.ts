@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  standalone: false,
 	selector: 'app-menu-status',
 	templateUrl: './menu-status.component.html',
 	styleUrls: ['./menu-status.component.scss'],

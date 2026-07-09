@@ -5,10 +5,9 @@ import { HttpService } from '../../services/common/http.service';
 import { MessageService } from '../../services/common/message.service';
 import { BFGUserService } from '../../services/bfg-user.service';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
 	selector: 'app-house-menu-edit',
 	templateUrl: './menu-edit.page.html',
 	styleUrls: ['./menu-edit.page.scss'],

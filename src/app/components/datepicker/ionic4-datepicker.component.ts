@@ -2,9 +2,9 @@ import { Component, OnInit, forwardRef, Input, ElementRef, Renderer2 } from '@an
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NgModel } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Ionic4DatepickerModalComponent } from './ionic4-datepicker-modal/ionic4-datepicker-modal.component';
-import moment from 'moment';
+import * as moment_ from 'moment';
 
-
+const moment = moment_;
 
 const noop = () => {
 };
@@ -15,7 +15,6 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   multi: true
 };
 @Component({
-  standalone: false,
   selector: 'li-ionic4-datepicker',
   templateUrl: './ionic4-datepicker.component.html',
   styleUrls: ['./ionic4-datepicker.component.scss'],

@@ -1,14 +1,13 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
 import { MessageService } from '../../services/common/message.service';
 import { BFGUserService } from '../../services/bfg-user.service';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
 	selector: 'app-house-menu-list',
 	templateUrl: './menu-list.page.html',
 	styleUrls: ['./menu-list.page.scss'],
@@ -24,8 +23,7 @@ export class MenuListPage {
 		private router:Router,
 		private route: ActivatedRoute,
 		private http: HttpService,
-		private msg: MessageService,
-		private cdr: ChangeDetectorRef
+		private msg: MessageService
 	) {}
 
 	ngOnInit() {
@@ -59,39 +57,20 @@ export class MenuListPage {
 
 		this._houseId = houseId;
 
-		this.bfgUser.initializeHouses().subscribe({
-			next: async (myResponse) => {
-				this.bfgUser.switchToHouse(houseId);
+		this.bfgUser.initializeHouses().subscribe(async myResponse => {
+			this.bfgUser.switchToHouse(houseId);
 
-				this.http.post('bfg/menu-builder/load-list', {
-					bfg_house_id: houseId
-				}).subscribe({
-					next: async (response) => {
-						await this.msg.hideLoader();
-
-						this.menus = response.menus_summary.weeks;
-						this.houseName = response.house_name;
-
-						console.log(response);
-						this.loaded = true;
-						this.cdr.detectChanges();
-					},
-					error: async (error) => {
-						console.error('MenuListPage: Error loading menu list', error);
-						await this.msg.hideLoader();
-						this.msg.showToast('Error', 'Unable to load menu list.');
-						this.loaded = true;
-						this.cdr.detectChanges();
-					}
-				});
-			},
-			error: async (error) => {
-				console.error('MenuListPage: Error initializing houses', error);
+			this.http.post('bfg/menu-builder/load-list', {
+				bfg_house_id: houseId
+			}).subscribe(async response => {
 				await this.msg.hideLoader();
-				this.msg.showToast('Error', 'Unable to load houses.');
+
+				this.menus = response.menus_summary.weeks;
+				this.houseName = response.house_name;
+
+				console.log(response);
 				this.loaded = true;
-				this.cdr.detectChanges();
-			}
+			});
 		});
 	}
 }

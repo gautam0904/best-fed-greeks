@@ -19,23 +19,23 @@ import { Ionic4DatepickerModule } from './datepicker/ionic4-datepicker.module';
 		MealDetailsComponent,
 		MenuStatusComponent
 	],
-
+	entryComponents: [],
 	imports: [
-		IonicModule,
-		CommonModule,
-		FormsModule,
-		Ionic4DatepickerModule,
-		RouterModule
-	],
-	exports: [
-		AllergiesComponent,
+    	IonicModule,
+    	CommonModule,
+    	FormsModule,
+    	Ionic4DatepickerModule,
+    	RouterModule
+    ],
+    exports: [
+    	AllergiesComponent,
 		DietComponent,
 		MealDetailsComponent,
 		Ionic4DatepickerModule,
 		MenuStatusComponent
-	],
+    ],
 	providers: [],
 	bootstrap: []
 })
 
-export class ComponentsModule { }
+export class ComponentsModule {}

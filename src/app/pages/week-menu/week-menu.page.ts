@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { HttpService } from '../../services/common/http.service';
@@ -6,10 +6,9 @@ import { MessageService } from '../../services/common/message.service';
 import { BFGMealPlanService } from '../../services/bfg-meal-plan.service';
 import { BFGUserService } from '../../services/bfg-user.service';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
 	selector: 'app-week-menu',
 	templateUrl: './week-menu.page.html',
 	styleUrls: ['./week-menu.page.scss'],
@@ -50,8 +49,7 @@ export class WeekMenuPage {
 		private mealPlan: BFGMealPlanService,
 		public bfgUser: BFGUserService,
 		private http: HttpService,
-		private msg: MessageService,
-		private cdr: ChangeDetectorRef
+		private msg: MessageService
 	) {}
 
 	ngOnInit() {
@@ -183,7 +181,6 @@ export class WeekMenuPage {
 				
 				this.initialLoad = true;
 				this.menuDetailsLoaded = true;
-				this.cdr.detectChanges();
 			});
 		}
 		else if(this.isChef) {
@@ -200,7 +197,6 @@ export class WeekMenuPage {
 
 				this.initialLoad = true;
 				this.menuDetailsLoaded = true;
-				this.cdr.detectChanges();
 			});
 		}
 		else {

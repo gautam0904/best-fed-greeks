@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import moment from 'moment';
+import * as moment from 'moment';
 import { Router } from '@angular/router';
 
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -9,7 +9,6 @@ import { MessageService } from '../../services/common/message.service';
 import { BFGUserService } from '../../services/bfg-user.service';
 
 @Component({
-  standalone: false,
 	selector: 'app-meal-details',
 	templateUrl: './meal-details.component.html',
 	styleUrls: ['./meal-details.component.scss'],
@@ -92,7 +91,6 @@ export class MealDetailsComponent implements OnInit {
 			this.details[idx].late_plate = response.late_plate;
 
 			this.detailsChanged.emit();
-			this._detailsUpdated.next(true);
 		});
 	}
 

@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavParams, ModalController, IonContent } from '@ionic/angular';
 
-import moment from 'moment';
+import * as moment_ from 'moment';
+const moment = moment_;
 
 @Component({
-  standalone: false,
   selector: 'li-ionic4-datepicker-modal',
   templateUrl: './ionic4-datepicker-modal.component.html',
   styleUrls: ['./ionic4-datepicker-modal.component.scss']
@@ -178,10 +178,9 @@ export class Ionic4DatepickerModalComponent implements OnInit {
 
   // Date selected
   dateSelected(selectedDate) {
+    // console.log('dateSelected =>', selectedDate);
     if (selectedDate && !selectedDate.disabled) {
-      if (!selectedDate || Object.keys(selectedDate).length === 0) { 
-        return; 
-      }
+      if (!selectedDate || Object.keys(selectedDate).length === 0) { return; }
       this.isSelectedDateFound = true;
       this.selctedDateEpoch = selectedDate.epoch;
       this.selectedDateString = this.formatDate();
@@ -351,11 +350,8 @@ export class Ionic4DatepickerModalComponent implements OnInit {
 
   // for dismiss modal
   closeModal(selectedDate) {
-    console.log('DEBUG: closeModal called with', selectedDate);
-    if (selectedDate === null) {
-      this.modalCtrl.dismiss(null);
-      return;
-    }
+    // console.log('closeModal => ', selectedDate);
+    this.modalCtrl.getTop();
     const formattedDate = moment(selectedDate).format(this.mainObj.dateFormat);
     this.modalCtrl.dismiss({ 'date': formattedDate });
   }

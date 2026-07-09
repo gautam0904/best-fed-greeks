@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-
+import { AutosizeModule } from 'ngx-autosize';
 
 import { ChatPage } from './chat.page';
 import { ChatInteractionsPage } from './chat-interactions.page';
@@ -22,9 +22,9 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-
+    AutosizeModule
   ],
-
+  entryComponents: [ChatInteractionsPage],
   declarations: [ChatPage, ChatInteractionsPage]
 })
-export class ChatPageModule { }
+export class ChatPageModule {}

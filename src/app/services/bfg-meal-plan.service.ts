@@ -3,7 +3,7 @@ import { HttpService } from './common/http.service';
 import { MessageService } from './common/message.service';
 
 import { Observable } from 'rxjs';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Injectable({
 	providedIn: 'root',

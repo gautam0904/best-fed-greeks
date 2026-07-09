@@ -5,7 +5,6 @@ import { AlertController } from '@ionic/angular';
 
 
 @Component({
-  standalone: false,
 	selector: 'page-account',
 	templateUrl: 'account.html',
 	styleUrls: ['./account.scss'],

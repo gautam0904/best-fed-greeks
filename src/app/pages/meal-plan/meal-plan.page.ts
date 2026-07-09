@@ -5,10 +5,9 @@ import { HttpService } from '../../services/common/http.service';
 import { MessageService } from '../../services/common/message.service';
 import { BFGMealPlanService } from '../../services/bfg-meal-plan.service';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
 	selector: 'app-meal-plan',
 	templateUrl: './meal-plan.page.html',
 	styleUrls: ['./meal-plan.page.scss'],

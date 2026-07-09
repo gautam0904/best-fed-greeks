@@ -11,19 +11,18 @@
 
 	<ion-grid no-padding>
 		<ion-row padding>
-			<ion-col size='12' size-lg="6" offset-lg="3">
+			<ion-col size='12' size-lg="6" offset-lg="3" >	
 				<!-- TODO - Make sure to capture data-->
 				<h3>Chef Rating</h3>
-				<!-- <rating [(ngModel)]="data.rating"
+				<rating [(ngModel)]="data.rating"
 				        readonly="false" 
 				        size="default">
-				</rating> -->
+				</rating>
 				<form>
 					<ion-list>
 						<ion-item>
 							<ion-label position="stacked" color="primary">Comment</ion-label>
-							<ion-textarea [(ngModel)]="data.feedback" name="feedback" rows="6" cols="20"
-								placeholder="Please leave us a comment..."></ion-textarea>
+							<ion-textarea  [(ngModel)]="data.feedback" name="feedback" rows="6" cols="20" placeholder="Please leave us a comment..."></ion-textarea>
 						</ion-item>
 					</ion-list>
 				</form>
@@ -34,6 +33,5 @@
 </ion-content>
 
 <ion-footer>
-	<ion-button bfg-btm-btn expand="full" size="large" (click)="save()"
-		color="secondary"><strong>Save</strong></ion-button>
+		<ion-button bfg-btm-btn expand="full" size="large" (click)="save()" color="secondary"><strong>Save</strong></ion-button>
 </ion-footer>

@@ -2,10 +2,9 @@ import { Component, Input } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { IonContent, IonInfiniteScroll, ModalController } from '@ionic/angular';
 
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
-  standalone: false,
   selector: 'chat-interactions-page',
   templateUrl: './chat-interactions.page.html',
   styleUrls: ['./chat-interactions.page.scss'],

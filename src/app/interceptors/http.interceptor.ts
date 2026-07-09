@@ -115,6 +115,12 @@ console.log('HttpErrorResponse', err);
 			serverError = false;
 
 		switch(err.status) {
+			case 0:
+				// Network unreachable (ERR_NAME_NOT_RESOLVED, offline, etc.)
+				// Silently fail - don't show error toast for background config calls
+				subject.next(errorEvent);
+				subject.complete();
+				return Promise.resolve();
 			case 403:
 			case 401:
 				authenticationError = true;
@@ -174,14 +180,26 @@ console.log('HttpErrorResponse', err);
 			// Try to get refreshToken and replay our original request.
 			// Has to be a simpler less nested way of doing this.
 			// Will investigate later.
-			const refreshToken = this.bfgUser.refreshToken;
-			if (refreshToken) {
-				// For now, just redirect to login since refresh token logic is complex
-				this.bfgUser.clearStoredUser();
-				this.router.navigateByUrl('login');
-			} else {
-				redirectToLogin = true;
-			}
+			this.bfgUser.refreshToken().subscribe(user => {
+console.log('I just did a refresh');
+				if(user && user.access_token) {
+console.log('And I found user', user);
+					next.handle(this.getTokenRequest(
+						user,
+						request
+					)).pipe(
+						tap(evt => {
+console.log('Success');
+							this.handleSuccess(evt, subject, true);
+						}, async err => {
+console.log('Error');
+							await this.handleError(request, next, subject, user, err);
+						})
+					).subscribe();
+				}	
+			});
+
+			return Promise.resolve();
 		}
 		else if(authenticationError) {
 			redirectToLogin = (refresh || this._justRefreshed) || !hasToken ? true : false;

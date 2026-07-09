@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
+import { IonicRatingModule } from 'ionic4-rating';
 
 import { ComponentsModule } from '../../components/components.module';
 import { MealRatingPage } from './meal-rating.page';
@@ -21,8 +22,9 @@ const routes: Routes = [
 		FormsModule,
 		IonicModule,
 		RouterModule.forChild(routes),
+		IonicRatingModule,
 		ComponentsModule
 	],
 	declarations: [MealRatingPage]
 })
-export class MealRatingPageModule { }
+export class MealRatingPageModule {}

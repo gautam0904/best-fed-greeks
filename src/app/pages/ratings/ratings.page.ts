@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { BFGUserService } from '../../services/bfg-user.service';
 
 @Component({
-  standalone: false,
   selector: 'app-ratings',
   templateUrl: './ratings.page.html',
   styleUrls: ['./ratings.page.scss'],

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NgForm } from '@angular/forms';
 
@@ -8,7 +8,6 @@ import { BFGUserService } from '../../services/bfg-user.service';
 import { BFGPushNotificationService } from '../../services/bfg-push-notification.service';
 
 @Component({
-  standalone: false,
 	selector: 'app-profile',
 	templateUrl: './profile.page.html',
 	styleUrls: ['./profile.page.scss'],
@@ -30,8 +29,7 @@ export class ProfilePage {
 		public bfgUser: BFGUserService,
 		private push: BFGPushNotificationService,
 		private http: HttpService,
-		private msg: MessageService,
-		private cdr: ChangeDetectorRef
+		private msg: MessageService
 	) {}
 
 	public async ionViewDidEnter() {
@@ -52,7 +50,6 @@ export class ProfilePage {
 			// this.date = response.date;
 
 			this.loaded = true;
-			this.cdr.detectChanges();
 		});
 	}
 
